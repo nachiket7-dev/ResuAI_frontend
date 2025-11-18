@@ -58,7 +58,8 @@ Database (MongoDB Atlas)
 - Mongoose (MongoDB)
 - JWT + bcrypt for authentication
 - Multer for uploads
-- OpenAI API for AI features
+- ImageKit SDK for image hosting and processing
+- Gemini API for AI features
 
 ---
 
