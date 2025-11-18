@@ -85,7 +85,7 @@ Database (MongoDB Atlas)
 | Backend       | Node.js, Express.js                                                           |
 | Database      | MongoDB Atlas (Mongoose)                                                      |
 | Authentication| JWT + bcrypt                                                                  |
-| AI            | OpenAI API (text generation, PDF parsing)                                     |
+| AI            | Gemini API (text generation, PDF parsing)                                     |
 | Hosting       | Vercel (frontend), Render/Railway (backend), MongoDB Atlas (database)         |
 
 ---
