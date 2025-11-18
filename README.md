@@ -36,7 +36,7 @@ Database (MongoDB Atlas)
 
 
 **Authentication**: JWT-based login/signup  
-**AI Integration**: OpenAI for summary and job description enhancement  
+**AI Integration**: Gemini for summary and job description enhancement  
 **Hosting**:
 - Frontend → Vercel
 - Backend → Render
