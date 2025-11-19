@@ -1,4 +1,4 @@
-# ResuAI – AI-Powered Resume Builder
+# ResuAI – A Full-Stack AI-Powered Resume Builder
 
 ---
 
