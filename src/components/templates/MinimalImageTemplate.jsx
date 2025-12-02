@@ -42,7 +42,6 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                 {/* Left Sidebar */}
                 <aside className="col-span-1 border-r border-zinc-400 p-6 pt-0">
 
-
                     {/* Contact */}
                     <section className="mb-8">
                         <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
@@ -183,7 +182,6 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
             </div>
         </div>
     );
-}
-
+};
 
 export default MinimalImageTemplate;

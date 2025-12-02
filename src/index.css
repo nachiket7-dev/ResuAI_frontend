@@ -1,32 +1,151 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: 255 255 255; /* White */
+  --foreground: 9 9 11;      /* Zinc 950 */
+  --muted: 113 113 122;      /* Zinc 500 */
+  --surface: 255 255 255;    /* White */
+  --surface-muted: 250 250 250; /* Zinc 50 */
+  --border: 228 228 231;     /* Zinc 200 */
+  --accent: 79 70 229;       /* Indigo 600 */
+  --accent-foreground: 255 255 255;
+  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.dark {
+  --background: 2 2 4;       /* Rich Black / Deep Zinc */
+  --foreground: 250 250 250; /* Zinc 50 */
+  --muted: 161 161 170;      /* Zinc 400 */
+  --surface: 9 9 11;         /* Zinc 950 */
+  --surface-muted: 24 24 27; /* Zinc 900 */
+  --border: 39 39 42;        /* Zinc 800 */
+  --accent: 99 102 241;      /* Indigo 500 */
+  --accent-foreground: 255 255 255;
+  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
 
 * {
   font-family: "Outfit", sans-serif;
 }
 
+body {
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
+  min-height: 100vh;
+  @apply transition-colors duration-300;
+}
+
+/* Force dark mode styles when .dark class is present on html */
+:root.dark body {
+  background-color: theme('colors.zinc.950');
+  color: theme('colors.zinc.50');
+}
+
 @layer base {
   button {
-    @apply cursor-pointer;
+    @apply cursor-pointer transition duration-200 ease-out;
   }
-  input:not([type="checkbox"]){
-    @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg
+
+  input:not([type="checkbox"]):not([type="file"]) {
+    @apply bg-white border border-zinc-300 text-zinc-900 px-4 py-2.5 rounded-md shadow-sm;
+    @apply focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500;
+    @apply placeholder:text-zinc-400;
+    @apply dark:bg-zinc-800 dark:border-zinc-600 dark:text-zinc-100 dark:placeholder:text-zinc-500;
   }
-  textarea{
-    @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg resize-none
+
+  textarea {
+    @apply bg-white border border-zinc-300 text-zinc-900 px-4 py-2.5 rounded-md shadow-sm;
+    @apply focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500;
+    @apply placeholder:text-zinc-400 resize-none;
+    @apply dark:bg-zinc-800 dark:border-zinc-600 dark:text-zinc-100 dark:placeholder:text-zinc-500;
   }
+
+  .card {
+    background: rgb(var(--surface));
+    border: 1px solid rgb(var(--border));
+    border-radius: 12px; /* rounded-xl */
+    box-shadow: var(--shadow-soft);
+  }
+
+  .card-muted {
+    background: rgb(var(--surface-muted));
+    border: 1px solid rgba(var(--border), 0.8);
+    border-radius: 12px;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full bg-indigo-50 text-indigo-700 px-3 py-1 text-xs font-medium border border-indigo-100;
+  }
+}
+
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+.animate-aurora {
+  animation: aurora 60s linear infinite;
+}
+
+@keyframes floaty {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+}
+
+.float-soft {
+  animation: floaty 12s ease-in-out infinite;
+}
+
+.float-soft.delay {
+  animation-delay: -5s;
+}
+
+.glow-pulse {
+  animation: pulseGlow 6s ease-in-out infinite;
 }
 
 @media print {
   body * {
-      visibility: hidden;
+    visibility: hidden;
   }
-  #resume-preview, #resume-preview * {
-      visibility: visible;
+  .no-print {
+    display: none;
+  }
+  #resume-preview,
+  #resume-preview * {
+    visibility: visible;
   }
   #resume-preview {
-      position: absolute;
-      left: 0;
-      top: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 }

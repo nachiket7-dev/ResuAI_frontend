@@ -25,25 +25,25 @@ const Testimonial = () => {
     {
       image:
         "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=60",
-      name: "Avery Johnson",
-      handle: "@averywrites",
+      name: "Daryl Smith",
+      handle: "@darylwrites",
     },
   ];
   const CreateCard = ({ card }) => (
-    <div className="p-4 rounded-lg mx-4 shadow hover:shadow-lg transition-all duration-200 w-72 shrink-0">
-      <div className="flex gap-2">
+    <div className="p-5 rounded-xl bg-white dark:bg-zinc-900 shadow-sm w-72 shrink-0 border border-zinc-200 dark:border-zinc-800 hover:border-indigo-200 dark:hover:border-indigo-800 transition-colors">
+      <div className="flex gap-3 mb-3">
         <img
-          className="size-11 rounded-full"
+          className="size-12 rounded-full ring-2 ring-indigo-50"
           src={card.image}
           alt="User Image"
         />
         <div className="flex flex-col">
-          <div className="flex items-center gap-1">
-            <p>{card.name}</p>
+          <div className="flex items-center gap-1.5">
+            <p className="font-semibold text-zinc-900 dark:text-white">{card.name}</p>
             <svg
-              className="mt-0.5 fill-green-500"
-              width="12"
-              height="12"
+              className="mt-0.5 fill-indigo-500"
+              width="14"
+              height="14"
               viewBox="0 0 12 12"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -54,10 +54,10 @@ const Testimonial = () => {
               />
             </svg>
           </div>
-          <span className="text-xs text-slate-500">{card.handle}</span>
+          <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">{card.handle}</span>
         </div>
       </div>
-      <p className="text-sm py-4 text-gray-800">
+      <p className="text-sm py-2 text-zinc-600 dark:text-zinc-300 leading-relaxed">
         Radiant made undercutting all of our competitors an absolute breeze.
       </p>
     </div>
@@ -65,37 +65,34 @@ const Testimonial = () => {
 
   return (
     <>
-      <div
-        id="testimonials"
-        className="flex flex-col items-center my-10 scroll-mt-12"
-      >
-        <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-6 py-1.5">
-          <BookUserIcon className="size-4.5 stroke-green-600" />
+      <div id="testimonials" className="flex flex-col items-center my-16 scroll-mt-20 text-zinc-900 dark:text-white">
+        <div className="flex items-center gap-2 text-sm uppercase tracking-[0.3em] font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 rounded-full px-4 py-1.5 border border-indigo-100 dark:border-indigo-800 mb-2">
+          <BookUserIcon className="size-4 stroke-indigo-700" />
           <span>Testimonials</span>
         </div>
         <Title
           title="Don't just take our words"
-          description="Hear what our users say about us. We're always looking for ways to improve. If you have a positive experience with us, leave us a review."
+          description="Hear from people building careers with ResumeLab. We're constantly iterating to keep the experience modern and reliable."
         />
       </div>
-      <div className="marquee-row w-full mx-auto max-w-5xl overflow-hidden relative">
-        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent"></div>
-        <div className="marquee-inner flex transform-gpu min-w-[200%] pt-10 pb-5">
+      <div className="relative w-full mx-auto max-w-5xl overflow-hidden py-10">
+        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white dark:from-zinc-950 to-transparent"></div>
+        <div className="marquee-inner flex transform-gpu min-w-[200%] gap-6">
           {[...cardsData, ...cardsData].map((card, index) => (
             <CreateCard key={index} card={card} />
           ))}
         </div>
-        <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent"></div>
+        <div className="absolute right-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-l from-white dark:from-zinc-950 to-transparent"></div>
       </div>
 
-      <div className="marquee-row w-full mx-auto max-w-5xl overflow-hidden relative">
-        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent"></div>
-        <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] pt-10 pb-5">
+      <div className="relative w-full mx-auto max-w-5xl overflow-hidden py-10">
+        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white dark:from-zinc-950 to-transparent"></div>
+        <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] gap-6">
           {[...cardsData, ...cardsData].map((card, index) => (
             <CreateCard key={index} card={card} />
           ))}
         </div>
-        <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent"></div>
+        <div className="absolute right-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-l from-white dark:from-zinc-950 to-transparent"></div>
       </div>
       <style>{`
             @keyframes marqueeScroll {

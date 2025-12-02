@@ -17,7 +17,7 @@ const TemplateSelector = ({selectedTemplate, onChange}) => {
         {
             id : "minimal-image",
             name : "Minimal Image",
-            preview : "Minimal design with a single imag eand clean typography"
+            preview : "Minimal design with a single image and clean typography"
         },
         {
             id : "minimal",
@@ -27,24 +27,24 @@ const TemplateSelector = ({selectedTemplate, onChange}) => {
     ]
   return (
     <div className='relative'>
-        <button onClick={() => setIsOpen(!isOpen)} className='flex items-center gap-1 text-sm text-blue-600 bg-gradient-to-r from-blue-50 to-blue-100 ring-blue-300 hover:ring transition-all px-3 py-2 rounded-lg'>
-            <Layout size={14} /><span className='max-sm:hidden'>Template</span>
+        <button onClick={() => setIsOpen(!isOpen)} className='flex items-center gap-1.5 text-sm font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all px-4 py-2 rounded-md shadow-sm'>
+            <Layout size={16} /><span className='max-sm:hidden'>Template</span>
         </button>
         {isOpen && (
-            <div className='absolute top-full w-xs p-3 mt-2 space-y-3 z-10 bg-white rounded-md border border-gray-200 shadow-sm'>
+            <div className='absolute top-full w-72 p-4 mt-2 space-y-3 z-20 bg-white dark:bg-zinc-900 rounded-md border border-zinc-200 dark:border-zinc-700 shadow-lg'>
                 {templates.map((template) => {
-                    return (<div key={template.id} onClick={() => {onChange(template.id); setIsOpen(false)}} className={`relative p-3 border rounded-md cursor-pointer transition-all ${selectedTemplate === template.id ? "border-blue-400 bg-blue-100" : "border-gray-300 hover:border-gray-400 hover:bg-gray-100"}`}>
+                    return (<div key={template.id} onClick={() => {onChange(template.id); setIsOpen(false)}} className={`relative p-4 border-2 rounded-md cursor-pointer transition-all duration-200 ${selectedTemplate === template.id ? "border-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 shadow-sm" : "border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800"}`}>
                         {selectedTemplate === template.id && (
-                            <div className='absolute top-2 right-2'>
-                                <div className='size-5 bg-blue-400 rounded-full flex items-center justify-center'>
-                                    <Check className='w-3 h-3 text-white'/>
+                            <div className='absolute top-3 right-3'>
+                                <div className='size-6 bg-indigo-600 rounded-full flex items-center justify-center shadow-sm'>
+                                    <Check className='w-3.5 h-3.5 text-white'/>
                                 </div>
                             </div>
                         )}
 
-                        <div className='space-y-1'>
-                            <h4 className='font-medium text-gray-800'>{template.name}</h4>
-                            <div className='mt-2 p-2 bg-blue-50 rounded text-xs text-gray-500 italic'>{template.preview}</div>
+                        <div className='space-y-2 pr-8'>
+                            <h4 className='font-semibold text-zinc-800 dark:text-zinc-200'>{template.name}</h4>
+                            <div className='p-2.5 bg-white/60 dark:bg-zinc-800/60 rounded-md text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed'>{template.preview}</div>
                         </div>
                     </div>)
                 })}

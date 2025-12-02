@@ -3,79 +3,84 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-10 md:gap-20 py-16 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500 bg-gradient-to-r from-white via-green-200/60 to-white mt-40">
+      <footer className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-10 md:gap-20 py-16 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 mt-40">
         <div className="flex flex-wrap items-start gap-10 md:gap-[60px] xl:gap-[140px]">
-          <a href="#">
-            <img src="/logo.svg" alt="logo" className="h-11 w-auto" />
+          <a href="#" className="flex items-center gap-2 group">
+            <div className="size-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300">
+              R
+            </div>
+            <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+              Resu AI
+            </span>
           </a>
           <div>
-            <p className="text-slate-800 font-semibold">Product</p>
+            <p className="text-zinc-800 dark:text-white font-semibold">Product</p>
             <ul className="mt-2 space-y-2">
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Home
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Support
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Pricing
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Affiliate
                 </a>
               </li>
             </ul>
           </div>
           <div>
-            <p className="text-slate-800 font-semibold">Resources</p>
+            <p className="text-zinc-800 dark:text-white font-semibold">Resources</p>
             <ul className="mt-2 space-y-2">
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Company
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Blogs
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Community
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Careers
-                  <span className="text-xs text-white bg-green-600 rounded-md ml-2 px-2 py-1">
+                  <span className="text-xs text-white bg-indigo-600 dark:bg-indigo-700 rounded-md ml-2 px-2 py-0.5">
                     We’re hiring!
                   </span>
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   About
                 </a>
               </li>
             </ul>
           </div>
           <div>
-            <p className="text-slate-800 font-semibold">Legal</p>
+            <p className="text-zinc-800 dark:text-white font-semibold">Legal</p>
             <ul className="mt-2 space-y-2">
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Privacy
                 </a>
               </li>
               <li>
-                <a href="/" className="hover:text-green-600 transition">
+                <a href="/" className="hover:text-indigo-600 transition">
                   Terms
                 </a>
               </li>
@@ -103,7 +108,7 @@ const Footer = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="lucide lucide-dribbble size-5 hover:text-green-500"
+                className="lucide lucide-dribbble size-5 hover:text-indigo-500 transition"
                 aria-hidden="true"
               >
                 <circle cx="12" cy="12" r="10"></circle>
@@ -127,7 +132,7 @@ const Footer = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="lucide lucide-linkedin size-5 hover:text-green-500"
+                className="lucide lucide-linkedin size-5 hover:text-indigo-500 transition"
                 aria-hidden="true"
               >
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
@@ -146,7 +151,7 @@ const Footer = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="lucide lucide-twitter size-5 hover:text-green-500"
+                className="lucide lucide-twitter size-5 hover:text-indigo-500 transition"
                 aria-hidden="true"
               >
                 <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
@@ -167,7 +172,7 @@ const Footer = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="lucide lucide-youtube size-6 hover:text-green-500"
+                className="lucide lucide-youtube size-6 hover:text-indigo-500 transition"
                 aria-hidden="true"
               >
                 <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path>
@@ -180,13 +185,6 @@ const Footer = () => {
           </p>
         </div>
       </footer>
-      <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,800;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-            
-                * {
-                    font-family: 'Poppins', sans-serif;
-                }
-            `}</style>
     </>
   );
 };

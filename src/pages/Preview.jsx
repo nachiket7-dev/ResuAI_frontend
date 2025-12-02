@@ -23,18 +23,19 @@ const Preview = () => {
     loadResume()
   },[])
   return resumeData ? (
-    <div className='bg-slate-100'>
-      <div className='max-w-3xl mx-auto py-10'>
-          <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} classes='py-4 bg-white'/>
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 py-12 px-4'>
+      <div className='max-w-3xl mx-auto'>
+          <ResumePreview data={resumeData} template={resumeData.template} accentColor={resumeData.accent_color} classes='py-6 bg-white dark:bg-zinc-900 shadow-2xl rounded-2xl'/>
       </div>
     </div>
   ) : (
-    <div>
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 flex items-center justify-center'>
       {isLoading ? <Loader /> : (
-        <div className='flex flex-col items-center justify-center h-screen'>
-          <p className='text-center text-6xl text-slate-400 font-medium'>Resume Not found</p>
-          <a href="/" className='mt-6 bg-green-500 hover:bg-green-600 text-white rounded-full px-6 h-9 m-1 ring-offset-1 ring-1 ring-green-400 flex items-center transition-colors'>
-            <ArrowLeft className='mr-2 size-4' /> Go to Home Screen
+        <div className='flex flex-col items-center justify-center text-center px-4'>
+          <p className='text-5xl md:text-6xl text-slate-300 dark:text-zinc-700 font-semibold mb-4'>Resume Not Found</p>
+          <p className='text-slate-500 dark:text-zinc-400 mb-8 max-w-md'>The resume you're looking for doesn't exist or is set to private.</p>
+          <a href="/" className='bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl px-8 py-3 font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 transform hover:scale-[1.02] active:scale-[0.98]'>
+            <ArrowLeft className='size-5' /> Go to Home Screen
           </a>
         </div>
       )}

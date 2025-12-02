@@ -20,42 +20,54 @@ const SkillsForm = ({data, onChange}) => {
         }
     }
   return (
-    <div className='space-y-4'>
-        <div>
-            <h3 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>Skills</h3>
-            <p className='text-sm text-gray-500'>Add your technical and soft skills</p>
-        </div>
+    <div className="space-y-4">
+      <div className="mb-4">
+        <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-1">Skills</h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">List the abilities recruiters want to see.</p>
+      </div>
 
-        <div className='flex gap-2'>
-            <input type="text" placeholder='Enter a skill (e.g., JavaScript, Project Management)' className='flex-1 px-3 py-2 text-sm'
-            onChange={(e) => setNewSkill(e.target.value)} value={newSkill} onKeyDown={handleKeyPress} />
-            <button onClick={addSkill} disabled={!newSkill.trim()} className='flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'>
-                <Plus size={4} /> Add
-            </button>
+      <div className="flex gap-2 flex-wrap">
+        <input
+          type="text"
+          placeholder="Enter a skill (e.g., JavaScript, Project Management)"
+          className="flex-1 min-w-[220px] rounded-md px-4 py-2.5 text-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+          onChange={(e) => setNewSkill(e.target.value)}
+          value={newSkill}
+          onKeyDown={handleKeyPress}
+        />
+        <button
+          onClick={addSkill}
+          disabled={!newSkill.trim()}
+          className="flex items-center gap-2 px-5 py-2.5 text-xs font-semibold uppercase tracking-wide rounded-md bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition"
+        >
+          <Plus className="size-4" /> Add
+        </button>
+      </div>
+      {skills.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {skills.map((skill, index) => (
+            <span key={index} className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-md text-sm font-medium border border-indigo-100 dark:border-indigo-800">
+              {skill}
+              <button onClick={() => removeSkill(index)} className="ml-1 hover:bg-indigo-100 rounded-full p-0.5 transition-colors">
+                <X className="w-3.5 h-3.5 text-indigo-700" />
+              </button>
+            </span>
+          ))}
         </div>
-        {skills.length > 0 ? (
-            <div className='flex flex-wrap gap-2'>
-                {skills.map((skill, index) => (
-                    <span key={index} className='flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm'>
-                        {skill}
-                        <button onClick={() => removeSkill(index)} className='ml-1 hover:bg-blue-200 rounded-full p-0.5 transition-colors'>
-                            <X className='w-3 h-3' />
-                        </button>
-                    </span>
-                ))}
-            </div>
-        ) : (
-            <div className='text-center py-6 text-gray-500'>
-                <Sparkles className='w-10 h-10 mx-auto mb-2 text-gray-300' />
-                <p>No skills added yet.</p>
-                <p className='text-sm'>Add your technical and soft skills above.</p>
-            </div>
-        )}
-        <div className='bg-blue-50 p-3 rounded-lg'>
-            <p className='text-sm text-blue-800'> <strong>Tip:</strong>Add 8-12 relevant skills. Include both technical skills (programming langauages, tools) and soft skills (leadership, communication)</p>
+      ) : (
+        <div className="text-center py-10 text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl">
+          <Sparkles className="w-12 h-12 mx-auto mb-3 text-zinc-300 dark:text-zinc-600" />
+          <p className="font-medium text-zinc-700 dark:text-zinc-300">No skills added yet.</p>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">Add your technical and soft skills above.</p>
         </div>
+      )}
+      <div className="bg-white dark:bg-zinc-800 p-4 rounded-md border border-zinc-200 dark:border-zinc-700">
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          💡 <strong>Tip:</strong> Add 8-12 relevant skills. Combine technical tools and interpersonal strengths.
+        </p>
+      </div>
     </div>
-  )
+  );
 }
 
 export default SkillsForm
