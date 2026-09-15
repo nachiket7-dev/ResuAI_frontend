@@ -1,43 +1,61 @@
 import { Check, Palette } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const ColorPicker = ({selectedColor, onChange}) => {
-    const colors = [
-        {name : "Blue", value : "#3B82F6"},
-        {name : "Red", value : "#EF4444"},
-        {name : "Green", value : "#10B981"},
-        {name : "Purple", value : "#8B5CF6"},
-        {name : "Orange", value : "#F97316"},
-        {name : "Indigo", value : "#6366F1"},
-        {name : "Teal", value : "#14B8A6"},
-        {name : "Pink", value : "#EC4899"},
-        {name : "Gray", value : "#6B7280"},
-        {name : "Black", value : "#1F2937"},
+    const themes = [
+        {name: 'Evergreen', description: 'Calm and confident', value: '#166534', swatch: '#22c55e', soft: '#dcfce7'},
+        {name: 'Ocean', description: 'Clear and modern', value: '#0f766e', swatch: '#14b8a6', soft: '#ccfbf1'},
+        {name: 'Cobalt', description: 'Sharp and technical', value: '#1d4ed8', swatch: '#3b82f6', soft: '#dbeafe'},
+        {name: 'Plum', description: 'Distinctive and creative', value: '#7e22ce', swatch: '#a855f7', soft: '#f3e8ff'},
+        {name: 'Sunset', description: 'Warm and energetic', value: '#c2410c', swatch: '#f97316', soft: '#ffedd5'},
+        {name: 'Rose', description: 'Friendly and expressive', value: '#be123c', swatch: '#f43f5e', soft: '#ffe4e6'},
+        {name: 'Slate', description: 'Minimal and serious', value: '#334155', swatch: '#64748b', soft: '#f1f5f9'},
+        {name: 'Midnight', description: 'Bold and high contrast', value: '#111827', swatch: '#374151', soft: '#e5e7eb'},
     ]
-    const [isOpen,setIsOpen] = useState(false)
+
+    const [isOpen, setIsOpen] = useState(false)
+    const pickerRef = useRef(null)
+
+    useEffect(() => {
+        const closeOnOutsideClick = (event) => {
+            if (pickerRef.current && !pickerRef.current.contains(event.target)) setIsOpen(false)
+        }
+        const closeOnEscape = (event) => {
+            if (event.key === 'Escape') setIsOpen(false)
+        }
+        document.addEventListener('mousedown', closeOnOutsideClick)
+        document.addEventListener('keydown', closeOnEscape)
+        return () => {
+            document.removeEventListener('mousedown', closeOnOutsideClick)
+            document.removeEventListener('keydown', closeOnEscape)
+        }
+    }, [])
+
+    const activeTheme = themes.find((theme) => theme.value.toLowerCase() === selectedColor?.toLowerCase())
+
   return (
-    <div className='relative'>
-        <button onClick={() => setIsOpen(!isOpen)} className='flex items-center gap-1.5 text-sm font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all px-4 py-2 rounded-md shadow-sm'>
-            <Palette size={16} /><span className='max-sm:hidden'>Accent</span>
+    <div ref={pickerRef} className='relative'>
+        <button type='button' onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen} className='flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-50 to-green-100 px-3 py-2 text-sm font-medium text-green-800 ring-1 ring-green-200 transition-all hover:-translate-y-0.5 hover:ring-green-400'>
+            <span className='size-3 rounded-full ring-2 ring-white' style={{backgroundColor: activeTheme?.swatch || selectedColor}} />
+            <Palette size={16} /><span className='max-sm:hidden'>Theme</span>
         </button>
         {isOpen && (
-            <div className='grid grid-cols-5 w-72 gap-3 absolute top-full left-0 p-4 mt-2 z-20 bg-white dark:bg-zinc-900 rounded-md border border-zinc-200 dark:border-zinc-700 shadow-lg'>
-                {colors.map((color) => {
+            <div className='animate-popover absolute left-0 top-full z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl shadow-slate-900/10'>
+                <div className='mb-3 flex items-start justify-between px-1'>
+                    <div><p className='text-sm font-semibold text-slate-900'>Choose a color theme</p><p className='mt-0.5 text-xs text-slate-500'>Set the tone for your resume.</p></div>
+                    <span className='rounded-full bg-green-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-green-700'>8 styles</span>
+                </div>
+                <div className='grid gap-2 sm:grid-cols-2'>
+                {themes.map((theme) => {
                     return (
-                        <div key={color.value} className='relative cursor-pointer group flex flex-col items-center' onClick={() => {onChange(color.value); setIsOpen(false)}}>
-                            <div className='w-12 h-12 rounded-full border-2 border-transparent group-hover:border-zinc-400 group-hover:scale-110 transition-all duration-200 shadow-sm' style={{backgroundColor : color.value}}>
-                            </div>
-                            {selectedColor === color.value && (
-                                <div className='absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 flex items-center justify-center'>
-                                    <div className='w-12 h-12 rounded-full bg-black/20 flex items-center justify-center'>
-                                        <Check className='size-5 text-white drop-shadow-lg'/>
-                                    </div>
-                                </div>
-                            )}
-                            <p className='text-xs text-center text-zinc-600 dark:text-zinc-400 font-medium mt-2'>{color.name}</p>
-                        </div>
+                        <button type='button' key={theme.value} className={`interactive-card group relative flex items-center gap-3 rounded-xl border p-2.5 text-left ${activeTheme?.value === theme.value ? 'border-green-400 bg-green-50/70' : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'}`} onClick={() => {onChange(theme.value); setIsOpen(false)}} aria-label={`Use ${theme.name} color theme`}>
+                            <span className='flex size-10 shrink-0 items-center justify-center rounded-xl' style={{backgroundColor: theme.soft}}><span className='size-5 rounded-full shadow-sm' style={{backgroundColor: theme.swatch}} /></span>
+                            <span className='min-w-0'><span className='block text-xs font-semibold text-slate-800'>{theme.name}</span><span className='mt-0.5 block truncate text-[11px] text-slate-500'>{theme.description}</span></span>
+                            {activeTheme?.value === theme.value && <Check className='ml-auto size-4 shrink-0 text-green-700' />}
+                        </button>
                     ) 
                 })}
+                </div>
             </div>
         )}
     </div>

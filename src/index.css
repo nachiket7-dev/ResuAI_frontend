@@ -1,151 +1,311 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 @import "tailwindcss";
-@variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: 255 255 255; /* White */
-  --foreground: 9 9 11;      /* Zinc 950 */
-  --muted: 113 113 122;      /* Zinc 500 */
-  --surface: 255 255 255;    /* White */
-  --surface-muted: 250 250 250; /* Zinc 50 */
-  --border: 228 228 231;     /* Zinc 200 */
-  --accent: 79 70 229;       /* Indigo 600 */
-  --accent-foreground: 255 255 255;
-  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-}
-
-.dark {
-  --background: 2 2 4;       /* Rich Black / Deep Zinc */
-  --foreground: 250 250 250; /* Zinc 50 */
-  --muted: 161 161 170;      /* Zinc 400 */
-  --surface: 9 9 11;         /* Zinc 950 */
-  --surface-muted: 24 24 27; /* Zinc 900 */
-  --border: 39 39 42;        /* Zinc 800 */
-  --accent: 99 102 241;      /* Indigo 500 */
-  --accent-foreground: 255 255 255;
-  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  color-scheme: light;
+  --brand-50: #f0fdf4;
+  --brand-100: #dcfce7;
+  --brand-200: #bbf7d0;
+  --brand-500: #22c55e;
+  --brand-600: #16a34a;
+  --brand-700: #15803d;
+  --brand-800: #166534;
+  --brand-950: #052e16;
+  --ink-950: #0f172a;
+  --ink-700: #334155;
+  --ink-500: #64748b;
+  --surface: #fffdf8;
+  --line: #e2e8f0;
+  --font-ui: "Avenir Next", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.06);
+  --shadow-lift: 0 20px 45px rgba(22, 101, 52, 0.14);
 }
 
 * {
-  font-family: "Outfit", sans-serif;
+  font-family: var(--font-ui);
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: rgb(var(--background));
-  color: rgb(var(--foreground));
-  min-height: 100vh;
-  @apply transition-colors duration-300;
+  margin: 0;
+  min-width: 320px;
+  background: var(--surface);
+  color: var(--ink-950);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Force dark mode styles when .dark class is present on html */
-:root.dark body {
-  background-color: theme('colors.zinc.950');
-  color: theme('colors.zinc.50');
+button,
+a,
+input,
+textarea,
+select {
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+input:not([type="checkbox"]),
+textarea,
+select {
+  min-height: 2.75rem;
+}
+
+.studio-panel {
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow-soft);
+}
+
+.studio-eyebrow {
+  color: var(--brand-700);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 @layer base {
   button {
-    @apply cursor-pointer transition duration-200 ease-out;
+    @apply cursor-pointer;
   }
-
-  input:not([type="checkbox"]):not([type="file"]) {
-    @apply bg-white border border-zinc-300 text-zinc-900 px-4 py-2.5 rounded-md shadow-sm;
-    @apply focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500;
-    @apply placeholder:text-zinc-400;
-    @apply dark:bg-zinc-800 dark:border-zinc-600 dark:text-zinc-100 dark:placeholder:text-zinc-500;
+  input:not([type="checkbox"]){
+    @apply outline-none focus:ring border border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg
   }
-
-  textarea {
-    @apply bg-white border border-zinc-300 text-zinc-900 px-4 py-2.5 rounded-md shadow-sm;
-    @apply focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500;
-    @apply placeholder:text-zinc-400 resize-none;
-    @apply dark:bg-zinc-800 dark:border-zinc-600 dark:text-zinc-100 dark:placeholder:text-zinc-500;
+  textarea{
+    @apply outline-none focus:ring border border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg resize-none
   }
-
-  .card {
-    background: rgb(var(--surface));
-    border: 1px solid rgb(var(--border));
-    border-radius: 12px; /* rounded-xl */
-    box-shadow: var(--shadow-soft);
+  select {
+    @apply outline-none focus:ring border border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg bg-white;
   }
-
-  .card-muted {
-    background: rgb(var(--surface-muted));
-    border: 1px solid rgba(var(--border), 0.8);
-    border-radius: 12px;
-  }
-
-  .pill {
-    @apply inline-flex items-center gap-2 rounded-full bg-indigo-50 text-indigo-700 px-3 py-1 text-xs font-medium border border-indigo-100;
+button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-none ring-2 ring-green-500 ring-offset-2;
   }
 }
 
-@keyframes aurora {
-  from {
-    background-position: 50% 50%, 50% 50%;
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -12px, 0) scale(1.03); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes popoverIn {
+  from { opacity: 0; transform: translateY(-5px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-rise-in { animation: riseIn 650ms var(--ease-out) both; }
+.animate-fade-in { animation: fadeIn 500ms ease both; }
+.animate-slide-right { animation: slideInRight 550ms var(--ease-out) both; }
+.animate-float { animation: float 7s ease-in-out infinite; }
+.animate-popover { animation: popoverIn 180ms var(--ease-out) both; transform-origin: top left; }
+.animate-modal { animation: modalIn 240ms var(--ease-out) both; }
+
+.interactive-card {
+  transition: transform 220ms var(--ease-out), box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.interactive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+.glow-button {
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.18);
+}
+
+.glow-button:hover {
+  box-shadow: 0 12px 28px rgba(22, 163, 74, 0.28);
+  transform: translateY(-2px);
+}
+
+.landing-surface {
+  background:
+    radial-gradient(circle at 50% 12%, rgba(220, 252, 231, 0.75), transparent 30rem),
+    linear-gradient(180deg, #fffdf8 0%, #f8fafc 100%);
+}
+
+.paper-grid {
+  background-image: linear-gradient(rgba(22, 101, 52, 0.09) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 101, 52, 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse at center, black 35%, transparent 75%);
+}
+
+.resume-paper {
+  transform: rotate(-1.5deg);
+  transition: transform 400ms var(--ease-out), box-shadow 400ms ease;
+}
+
+.resume-paper:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.1);
+}
+
+.showcase-visual {
+  min-height: 19rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.showcase-mint {
+  border-color: #bbf7d0;
+  background: linear-gradient(145deg, #ecfdf5, #f8fafc);
+}
+
+.showcase-amber {
+  border-color: #fde68a;
+  background: linear-gradient(145deg, #fffbeb, #fff7ed);
+}
+
+.showcase-violet {
+  border-color: #ddd6fe;
+  background: linear-gradient(145deg, #f5f3ff, #f8fafc);
+}
+
+.dashboard-surface {
+  background:
+    radial-gradient(circle at 92% 0%, rgba(220, 252, 231, 0.52), transparent 24rem),
+    var(--surface);
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(100deg, #f1f5f9 20%, #ffffff 38%, #f1f5f9 55%);
+  background-size: 200% 100%;
+  animation: shimmer 1.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  to {
-    background-position: 350% 50%, 350% 50%;
+  .interactive-card:hover,
+  .glow-button:hover { transform: none; }
+}
+
+@media (max-width: 639px) {
+  input:not([type="checkbox"]),
+  textarea,
+  select {
+    font-size: 1rem;
   }
 }
 
-.animate-aurora {
-  animation: aurora 60s linear infinite;
-}
-
-@keyframes floaty {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-14px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-@keyframes pulseGlow {
-  0% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.08);
-  }
-  100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-}
-
-.float-soft {
-  animation: floaty 12s ease-in-out infinite;
-}
-
-.float-soft.delay {
-  animation-delay: -5s;
-}
-
-.glow-pulse {
-  animation: pulseGlow 6s ease-in-out infinite;
+::selection {
+  background: #bbf7d0;
+  color: #14532d;
 }
 
 @media print {
   body * {
-    visibility: hidden;
+      visibility: hidden;
   }
-  .no-print {
-    display: none;
-  }
-  #resume-preview,
-  #resume-preview * {
-    visibility: visible;
+  #resume-preview, #resume-preview * {
+      visibility: visible;
   }
   #resume-preview {
-    position: absolute;
-    left: 0;
-    top: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+  }
+}
+
+.resume-design,
+.resume-design * {
+  font-family: var(--resume-font-family, var(--font-ui));
+}
+
+.resume-density-compact {
+  font-size: 0.92em;
+}
+
+.resume-density-spacious {
+  font-size: 1.05em;
+}
+
+#resume-preview section {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.resume-preview-shell {
+  background: linear-gradient(145deg, #ecfdf5, #e2e8f0 72%);
+  padding: clamp(0.5rem, 1.5vw, 1.25rem);
+  border: 1px solid #dbe3ec;
+  border-radius: 1rem;
+}
+
+.resume-preview-page {
+  min-height: 11in;
+  overflow: visible;
+  background: white;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+}
+
+.pdf-exporting .resume-preview-shell {
+  padding: 0;
+  border: 0;
+  background: white;
+}
+
+.pdf-exporting .resume-preview-page {
+  width: 8.5in;
+  min-height: auto;
+  overflow: visible;
+  box-shadow: none;
+}
+
+.pdf-exporting #resume-preview section,
+.pdf-exporting #resume-preview .resume-entry {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@media (max-width: 1023px) {
+  .resume-preview-page {
+    min-height: auto;
+  }
+}
+
+@media print {
+  .resume-preview-shell {
+    padding: 0;
+    border: 0;
+    background: white;
+  }
+  .resume-preview-page {
+    min-height: 0;
+    box-shadow: none;
   }
 }
