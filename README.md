@@ -1,20 +1,21 @@
-# ResuAI – AI-Powered Resume Builder
+# ResuAI – A Full-Stack AI-Powered Resume Builder
 
 ---
 
-Backend Repository : https://github.com/nachiket7-dev/ResuAI_backend
+## Backend Repository 
+**Repo link:** https://github.com/nachiket7-dev/ResuAI_backend
 
 ---
 
-Frontend : https://resu-ai-frontend.vercel.app/
-
-Backend : https://resuai-backend-5o18.onrender.com
+## Deployment URLs
+**Frontend:** https://resu-ai-frontend.vercel.app
+**Backend:** https://resuai-backend-5o18.onrender.com
 
 ---
 
 ## 1. Project Title
 
-**ResuAI – Intelligent Resume Creation Platform**
+**ResuAI – AI Powered Resume Builder**
 
 ---
 
@@ -25,7 +26,6 @@ Creating a polished resume is tedious and time-consuming. Most people struggle t
 ---
 
 ## 3. System Architecture
-
 Frontend (React + Redux + Vite)
 │
 ▼
@@ -36,12 +36,13 @@ Database (MongoDB Atlas)
 
 
 **Authentication**: JWT-based login/signup  
-**AI Integration**: OpenAI for summary and job description enhancement  
-**Media Storage**: ImageKit for profile images and optional background removal  
+**AI Integration**: OpenAI-compatible API for summary, job description enhancement, and resume parsing
 **Hosting**:
 - Frontend → Vercel
-- Backend → Render/Railway
+- Backend → Render
 - Database → MongoDB Atlas
+
+Authentication uses an HttpOnly session cookie. Existing local tokens remain supported for compatibility during migration.
 
 ---
 
@@ -59,8 +60,8 @@ Database (MongoDB Atlas)
 - Mongoose (MongoDB)
 - JWT + bcrypt for authentication
 - Multer for uploads
-- ImageKit SDK for image hosting & processing
-- Gemini API for AI features
+- ImageKit SDK for image hosting and processing
+- OpenAI-compatible API for AI features
 
 ---
 
@@ -71,10 +72,10 @@ Database (MongoDB Atlas)
 | Authentication & Authorization | User registration, login, logout, protected routes with JWT             |
 | CRUD Operations             | Create, read, update, delete resumes                                      |
 | Frontend Routing            | Pages: Home, Login, Dashboard, Resume Builder, Preview                    |
-| AI Assistance               | Enhance professional summary & job descriptions, parse PDF resumes        |
+| AI Assistance               | Resume reviews, job matching, grounded bullet rewrites, streaming cover letters, target profiles, usage quotas, and saved AI history |
 | Templates & Styling         | Choose templates, change accent colors, live preview                      |
 | Resume Sharing              | Toggle public/private, shareable public resume URLs                       |
-| File Uploads                | Profile image upload with optional background removal via ImageKit        |
+| File Uploads                | Profile image upload, optional background removal (ImageKit)              |
 | Hosting                     | Deployed frontend (Vercel) + backend (Render/Railway) + MongoDB Atlas     |
 
 ---
@@ -87,8 +88,7 @@ Database (MongoDB Atlas)
 | Backend       | Node.js, Express.js                                                           |
 | Database      | MongoDB Atlas (Mongoose)                                                      |
 | Authentication| JWT + bcrypt                                                                  |
-| AI            | Gemini API (text generation, PDF parsing)                                     |
-| Media Storage | ImageKit (image hosting + background removal)                                 |
+| AI            | OpenAI-compatible API (text generation, PDF parsing)                          |
 | Hosting       | Vercel (frontend), Render/Railway (backend), MongoDB Atlas (database)         |
 
 ---
@@ -105,12 +105,21 @@ Database (MongoDB Atlas)
 | `/api/resumes/delete/:id` | DELETE | Delete a resume                       | Authenticated|
 | `/api/resumes/get/:id`    | GET    | Get a single resume (private)         | Authenticated|
 | `/api/resumes/public/:id` | GET    | Get public resume (public view)       | Public       |
+| `/api/resumes/versions/:id` | GET    | Get saved resume versions             | Authenticated|
+| `/api/resumes/versions/:id/restore/:versionId` | POST | Restore a saved version | Authenticated|
 | `/api/ai/enhance-pro-sum` | POST   | AI-enhanced professional summary      | Authenticated|
 | `/api/ai/enhance-job-desc`| POST   | AI-enhanced job description           | Authenticated|
+| `/api/ai/review-resume`   | POST   | Structured resume review and score    | Authenticated|
+| `/api/ai/match-job`       | POST   | Match a resume against a job description | Authenticated|
+| `/api/ai/rewrite-bullet`  | POST   | Generate grounded bullet alternatives | Authenticated|
+| `/api/ai/cover-letter/stream` | POST | Stream a tailored cover letter draft | Authenticated|
+| `/api/ai/history`         | GET    | List saved AI outputs for a resume   | Authenticated|
+| `/api/ai/quota`           | GET    | View daily AI usage and remaining credits | Authenticated|
+| `/api/users/target-profiles` | GET/POST | List or save reusable target roles | Authenticated|
 | `/api/ai/upload-resume`   | POST   | Extract data from PDF resume          | Authenticated|
 
 ---
 
-## ✅ Summary
+## Summary
 
-ResuAI is a full-stack resume builder with a modern UI, AI enhancements, customizable templates, ImageKit-powered image uploads, and public sharing features. It’s built for real-world usage and ready to deploy with frontend/backend hosting and a cloud database.
+ResuAI is a full-stack resume builder with a modern UI, AI enhancements, customizable templates, and public sharing features. It’s built for real-world usage and ready to deploy with frontend/backend hosting and a cloud database.
