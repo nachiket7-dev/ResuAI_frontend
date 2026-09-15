@@ -1,159 +1,38 @@
-import { Eye, EyeOff, Lock, Mail, User2Icon } from "lucide-react";
-import React from "react";
-import api from "../configs/api";
-import { useDispatch } from "react-redux";
-import { login } from "../app/features/authSlice";
-import toast from "react-hot-toast";
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, FileText, Lock, Mail, User2Icon } from 'lucide-react';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../configs/api';
+import { useDispatch } from 'react-redux';
+import { login } from '../app/features/authSlice';
+import toast from 'react-hot-toast';
 
 const Login = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const query = new URLSearchParams(window.location.search);
-  const urlState = query.get("state");
-  const [state, setState] = React.useState(urlState || "login");
-
-  const [formData, setFormData] = React.useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [state, setState] = React.useState(query.get('state') || 'login');
   const [showPassword, setShowPassword] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [formData, setFormData] = React.useState({name: '', email: '', password: ''});
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
     try {
       const {data} = await api.post(`/api/users/${state}`, formData);
-      dispatch(login(data))
-      localStorage.setItem('token', data.token);
-      toast.success(data.message)
+      dispatch(login({token: null, user: data.user}));
+      toast.success(data.message);
+      navigate('/app');
     } catch (error) {
-      toast(error?.response?.data?.message || error.message)
+      toast.error(error?.response?.data?.message || error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const toggleState = () => setState((previous) => previous === 'login' ? 'register' : 'login');
 
-  return (
-    <div className="relative min-h-screen text-zinc-900 dark:text-zinc-50 transition-colors duration-300 overflow-hidden flex items-center justify-center">
-      {/* Background Effects (Same as Hero) */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-white dark:bg-[#020204] transition-colors duration-300"></div>
-        <div 
-          className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[140%] h-[80%] opacity-100 dark:opacity-100 blur-[100px] transition-opacity duration-500"
-          style={{
-            background: 'radial-gradient(ellipse at bottom, rgba(79, 70, 229, 0.4) 0%, rgba(124, 58, 237, 0.2) 30%, transparent 70%)'
-          }}
-        ></div>
-        <div 
-          className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[100%] h-[60%] opacity-0 dark:opacity-100 blur-[80px] transition-opacity duration-500 mix-blend-screen"
-          style={{
-            background: 'radial-gradient(ellipse at bottom, rgba(99, 102, 241, 0.6) 0%, rgba(139, 92, 246, 0.3) 40%, transparent 80%)'
-          }}
-        ></div>
-      </div>
-      <div className="max-w-6xl mx-auto px-4 py-16 grid lg:grid-cols-2 gap-10 items-center">
-        <div className="space-y-6 text-center lg:text-left">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-semibold uppercase tracking-wider border border-indigo-100 dark:border-indigo-800">
-            Built with AI + ImageKit
-          </span>
-          <h1 className="text-4xl font-semibold text-slate-900 dark:text-white leading-tight">
-            {state === "login"
-              ? "Welcome back to your workspace"
-              : "Create an account to start building resumes"}
-          </h1>
-          <p className="text-slate-500 dark:text-zinc-400 text-lg">
-            Smart templates, professional typography, and an effortless builder that keeps all of your resumes organized.
-          </p>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="w-full px-8 py-10 space-y-6 bg-white dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl"
-        >
-          <div>
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
-              {state === "login" ? "Sign in" : "Create account"}
-            </h2>
-            <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">
-              {state === "login"
-                ? "Enter your credentials to continue"
-                : "Fill the form below to get started"}
-            </p>
-          </div>
-          {state !== "login" && (
-            <div className="flex items-center gap-3 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 bg-zinc-50 dark:bg-zinc-950/50 focus-within:border-indigo-500 dark:focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-              <User2Icon size={18} className="text-zinc-400" />
-              <input
-                type="text"
-                name="name"
-                placeholder="Full name"
-                className="flex-1 bg-transparent outline-none text-sm text-zinc-900 dark:text-white placeholder:text-zinc-500"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          )}
-          <div className="flex items-center gap-3 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 bg-zinc-50 dark:bg-zinc-950/50 focus-within:border-indigo-500 dark:focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-            <Mail size={18} className="text-zinc-400" />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email address"
-              className="flex-1 bg-transparent outline-none text-sm text-zinc-900 dark:text-white placeholder:text-zinc-500"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="flex items-center gap-3 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-3 bg-zinc-50 dark:bg-zinc-950/50 focus-within:border-indigo-500 dark:focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-            <Lock size={18} className="text-zinc-400" />
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              className="flex-1 bg-transparent outline-none text-sm text-zinc-900 dark:text-white placeholder:text-zinc-500"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition"
-            >
-              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-            </button>
-          </div>
-          <div className="text-right">
-            <button className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors" type="reset">
-              Forgot password?
-            </button>
-          </div>
-          <button
-            type="submit"
-            className="w-full h-12 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-0.5 transition-all duration-300"
-          >
-            {state === "login" ? "Sign in" : "Sign up"}
-          </button>
-          <p
-            onClick={() =>
-              setState((prev) => (prev === "login" ? "register" : "login"))
-            }
-            className="text-xs text-slate-500 text-center cursor-pointer"
-          >
-            {state === "login"
-              ? "Don’t have an account?"
-              : "Already have an account?"}{" "}
-            <span className="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">
-              Click here
-            </span>
-          </p>
-        </form>
-      </div>
-    </div>
-  );
+  return <main className="landing-surface min-h-screen px-5 py-6 sm:px-8 lg:px-10"><div className="mx-auto max-w-7xl"><Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:-translate-x-0.5 hover:text-slate-900"><ArrowLeft className="size-4" /> Back to home</Link><div className="mx-auto grid max-w-5xl items-center gap-12 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:py-20"><div className="hidden lg:block"><div className="animate-rise-in"><p className="text-xs font-semibold uppercase tracking-[0.22em] text-green-700">Your resume studio</p><h1 className="mt-5 max-w-md text-5xl font-semibold tracking-[-0.05em] text-slate-950">The next version starts here.</h1><p className="mt-5 max-w-md text-base leading-7 text-slate-600">Keep your drafts, your decisions, and your next application in one calm workspace.</p><div className="mt-10 rounded-[2rem] border border-white bg-white/70 p-4 shadow-[0_25px_70px_rgba(20,83,45,0.12)]"><div className="flex items-center justify-between rounded-xl bg-[#f7f7f2] px-4 py-3"><div className="flex items-center gap-2"><span className="flex size-8 items-center justify-center rounded-lg bg-green-700 text-white"><FileText className="size-4" /></span><div><p className="text-xs font-semibold text-slate-900">Product designer</p><p className="text-[10px] text-slate-500">Last edited just now</p></div></div><span className="rounded-full bg-green-100 px-2 py-1 text-[10px] font-semibold text-green-800">84% complete</span></div><div className="mt-4 grid grid-cols-2 gap-3"><div className="space-y-2 rounded-xl border border-slate-200 bg-white p-4"><div className="h-2 w-20 rounded-full bg-slate-900" /><div className="h-1.5 w-full rounded-full bg-slate-200" /><div className="h-1.5 w-10/12 rounded-full bg-slate-200" /><div className="h-1.5 w-8/12 rounded-full bg-slate-200" /></div><div className="rounded-xl border border-green-200 bg-green-50 p-4"><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-green-800">Next step</p><p className="mt-2 text-sm font-semibold text-green-950">Polish your summary</p><span className="mt-4 inline-flex items-center gap-1 text-[10px] font-semibold text-green-700">Continue <ArrowRight className="size-3" /></span></div></div></div><div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-slate-500"><span className="flex items-center gap-1.5"><Check className="size-3.5 text-green-700" /> Autosaved drafts</span><span className="flex items-center gap-1.5"><Check className="size-3.5 text-green-700" /> Private by default</span></div></div></div><div className="animate-slide-right"><form onSubmit={handleSubmit} className="mx-auto w-full max-w-md rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_25px_70px_rgba(15,23,42,0.08)] sm:p-9"><div className="flex items-center gap-2"><span className="flex size-9 items-center justify-center rounded-xl bg-green-100 text-green-800"><FileText className="size-4" /></span><span className="text-sm font-semibold text-slate-900">ResuAI</span></div><h2 className="mt-9 text-3xl font-semibold tracking-[-0.04em] text-slate-950">{state === 'login' ? 'Welcome back.' : 'Create your studio.'}</h2><p className="mt-2 text-sm leading-6 text-slate-500">{state === 'login' ? 'Pick up where you left off.' : 'Start with a clearer way to build your next resume.'}</p>{state !== 'login' && <label className="mt-7 block text-sm font-medium text-slate-700">Name<div className="mt-2 flex items-center gap-3 rounded-xl border border-slate-200 px-3 py-3 focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-100"><User2Icon className="size-4 text-slate-400" /><input type="text" name="name" placeholder="Your name" className="min-w-0 flex-1 border-0 p-0 text-sm focus:ring-0" value={formData.name} onChange={(event) => setFormData({...formData, name: event.target.value})} required /></div></label>}<label className="mt-5 block text-sm font-medium text-slate-700">Email<div className="mt-2 flex items-center gap-3 rounded-xl border border-slate-200 px-3 py-3 focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-100"><Mail className="size-4 text-slate-400" /><input type="email" name="email" placeholder="you@example.com" className="min-w-0 flex-1 border-0 p-0 text-sm focus:ring-0" value={formData.email} onChange={(event) => setFormData({...formData, email: event.target.value})} required /></div></label><label className="mt-5 block text-sm font-medium text-slate-700">Password<div className="mt-2 flex items-center gap-3 rounded-xl border border-slate-200 px-3 py-3 focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-100"><Lock className="size-4 text-slate-400" /><input type={showPassword ? 'text' : 'password'} name="password" placeholder="At least 8 characters" className="min-w-0 flex-1 border-0 p-0 text-sm focus:ring-0" value={formData.password} onChange={(event) => setFormData({...formData, password: event.target.value})} required /><button type="button" onClick={() => setShowPassword((visible) => !visible)} className="text-slate-400 hover:text-slate-700" aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}</button></div></label>{state === 'login' && <button type="button" onClick={() => toast('Password reset is not configured yet.')} className="mt-4 text-left text-xs font-semibold text-green-700 hover:text-green-900">Forgot password?</button>}<button type="submit" disabled={isSubmitting} className="glow-button mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-green-700 py-3.5 text-sm font-semibold text-white transition hover:bg-green-800 disabled:cursor-wait disabled:opacity-60">{isSubmitting ? 'Opening workspace...' : state === 'login' ? 'Open workspace' : 'Create account'} {!isSubmitting && <ArrowRight className="size-4" />}</button><p className="mt-6 text-center text-sm text-slate-500">{state === 'login' ? 'New to ResuAI?' : 'Already have an account?'} <button type="button" onClick={toggleState} className="font-semibold text-green-700 hover:text-green-900">{state === 'login' ? 'Create an account' : 'Log in'}</button></p></form></div></div></div></main>;
 };
 
 export default Login;

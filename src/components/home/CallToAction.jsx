@@ -1,28 +1,7 @@
-import React from "react";
+import { ArrowUpRight, Check, FileText } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const CallToAction = () => {
-  return (
-    <section
-      id="cta"
-      className="max-w-5xl mx-auto px-10 sm:px-16 mt-28 py-12 border border-indigo-500/20 rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-800 dark:from-indigo-900 dark:via-violet-900 dark:to-indigo-800 text-white dark:text-white shadow-xl shadow-indigo-500/20"
-    >
-      <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
-        <p className="text-2xl md:text-3xl font-bold max-w-lg leading-tight">
-          Build a professional resume that helps you stand out and get hired.
-        </p>
-        <a
-          href="/app"
-          className="flex items-center gap-2 rounded-md px-8 py-3.5 bg-white dark:bg-zinc-950 text-indigo-600 dark:text-indigo-300 font-semibold shadow-sm hover:bg-indigo-50 dark:hover:bg-zinc-900 transition hover:-translate-y-0.5"
-        >
-          <span>Get started</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </a>
-      </div>
-    </section>
-  );
-};
+const CallToAction = () => <section id="cta" className="px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="relative mx-auto grid max-w-7xl items-center gap-10 overflow-hidden rounded-[2rem] bg-[#123524] px-7 py-10 text-white sm:px-12 sm:py-14 lg:grid-cols-[1fr_0.9fr] lg:px-16"><div className="pointer-events-none absolute -right-24 -top-32 size-80 rounded-full bg-green-400/20 blur-3xl" /><div className="relative"><p className="text-xs font-semibold uppercase tracking-[0.22em] text-green-300">Start with the story</p><h2 className="mt-5 max-w-xl text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">Your next application deserves a focused draft.</h2><p className="mt-5 max-w-lg text-base leading-7 text-green-50/70">Bring the experience. We’ll help you shape the document.</p><Link to="/app?state=register" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#d9f99d] px-6 py-3.5 text-sm font-semibold text-[#123524] transition hover:-translate-y-0.5 hover:bg-white">Open the studio <ArrowUpRight className="size-4" /></Link></div><div className="relative rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><div className="rounded-xl bg-[#fbfaf6] p-5 text-slate-900 shadow-2xl"><div className="flex items-center justify-between border-b border-slate-200 pb-4"><div className="flex items-center gap-2"><span className="flex size-8 items-center justify-center rounded-lg bg-green-700 text-white"><FileText className="size-4" /></span><span className="text-xs font-semibold">Your next draft</span></div><span className="text-[10px] font-medium text-slate-400">Ready when you are</span></div><div className="mt-5 space-y-3"><div className="flex items-center gap-3"><span className="flex size-5 items-center justify-center rounded-full bg-green-100 text-green-700"><Check className="size-3" /></span><span className="text-xs text-slate-600">Choose a role-ready starting point</span></div><div className="flex items-center gap-3"><span className="flex size-5 items-center justify-center rounded-full bg-green-100 text-green-700"><Check className="size-3" /></span><span className="text-xs text-slate-600">Shape the strongest version of your work</span></div><div className="flex items-center gap-3"><span className="flex size-5 items-center justify-center rounded-full bg-green-100 text-green-700"><Check className="size-3" /></span><span className="text-xs text-slate-600">Export when it feels right</span></div></div></div></div></div></section>;
 
 export default CallToAction;

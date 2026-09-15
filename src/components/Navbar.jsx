@@ -1,52 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { LayoutDashboard, Menu, X } from 'lucide-react'
 import { logout } from '../app/features/authSlice';
-import { useTheme } from "../hooks/useTheme";
-import { LogOut, Moon, Sun } from "lucide-react";
+import api from '../configs/api';
 
 const Navbar = () => {
     const {user} = useSelector((state) => state.auth);
-    const { theme, toggleTheme } = useTheme();
     const dispatch = useDispatch()
-    const handleLogout = () => {
-        dispatch(logout())
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [menuOpen, setMenuOpen] = useState(false)
+    const logoutUser = async () => {
+        navigate('/')
+        setMenuOpen(false)
+        try {
+            await api.post('/api/users/logout');
+        } finally {
+            dispatch(logout())
+        }
     }
   return (
-    <div className="sticky top-0 z-40 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/app" className="flex items-center gap-2 group">
-          <div className="size-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300">
-            R
-          </div>
-          <div className="flex flex-col">
-            <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Resu AI</h1>
-            <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">
-              Builder Suite
-            </span>
-          </div>
-        </Link>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
-          </button>
-          {user && (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition text-sm font-medium"
-            >
-              <LogOut size={16} />
-              Logout
+    <header className='sticky top-0 z-40 border-b border-slate-200/80 bg-[#fbfaf6]/90 backdrop-blur'>
+        <nav className='relative flex items-center justify-between max-w-7xl mx-auto px-4 py-3 text-slate-800'>
+            <Link to='/'>
+                <img src="/logo.svg" alt="ResuAI home" className='h-10 w-auto' />
+            </Link>
+            <div className='hidden items-center gap-3 text-sm sm:flex'>
+                <Link to='/app' className={`flex items-center gap-2 rounded-full px-4 py-2 ${location.pathname.startsWith('/app') ? 'bg-green-100 text-green-800' : 'text-slate-600 hover:bg-white'}`}>
+                    <LayoutDashboard className='size-4' /> Studio
+                </Link>
+                <span className='h-6 w-px bg-slate-200' aria-hidden='true' />
+                <p className='text-slate-600'>Hi, <span className='font-semibold text-slate-900'>{user?.name || 'there'}</span></p>
+                <button type='button' onClick={logoutUser} className='rounded-full border border-slate-300 bg-white px-5 py-2 font-medium text-slate-700 hover:border-slate-400 hover:bg-slate-50 active:scale-95'>Logout</button>
+            </div>
+            <button type='button' onClick={() => setMenuOpen((open) => !open)} className='rounded-lg p-2 text-slate-600 hover:bg-slate-100 sm:hidden' aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={menuOpen}>
+                {menuOpen ? <X className='size-5' /> : <Menu className='size-5' />}
             </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+            {menuOpen && <div className='absolute left-4 right-4 top-[calc(100%+0.5rem)] rounded-2xl border border-slate-200 bg-white p-3 shadow-xl sm:hidden'>
+                <Link to='/app' onClick={() => setMenuOpen(false)} className='flex items-center gap-2 rounded-xl px-3 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50'><LayoutDashboard className='size-4' /> Dashboard</Link>
+                <div className='my-2 h-px bg-slate-100' />
+                <p className='px-3 py-2 text-sm text-slate-500'>Signed in as <span className='font-semibold text-slate-800'>{user?.name || 'there'}</span></p>
+                <button type='button' onClick={logoutUser} className='mt-1 w-full rounded-xl px-3 py-3 text-left text-sm font-medium text-red-600 hover:bg-red-50'>Logout</button>
+            </div>}
+        </nav>
+    </header>
+  )
 }
 
 export default Navbar

@@ -1,141 +1,80 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { useTheme } from "../../hooks/useTheme";
-import { Moon, Sun } from "lucide-react";
+import React from 'react';
+import { ArrowRight, ArrowUpRight, Check, FileText, Gauge, Menu, Sparkles, WandSparkles, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-const Hero = () => {
-  const {user} = useSelector((state) => state.auth);
-  const { theme, toggleTheme } = useTheme();
-  const [menuOpen, setMenuOpen] = React.useState(false);
-
-
-
-  return (
-    <div className="relative min-h-screen overflow-hidden text-zinc-900 dark:text-zinc-50 transition-colors duration-300">
-      {/* Background Effects */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        {/* Main dark gradient background */}
-        <div className="absolute inset-0 bg-white dark:bg-[#020204] transition-colors duration-300"></div>
-        
-        {/* Bottom Glow Effect (Reference Image) - Using inline style for reliability */}
-        <div 
-          className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[140%] h-[80%] opacity-100 dark:opacity-100 blur-[100px] transition-opacity duration-500"
-          style={{
-            background: 'radial-gradient(ellipse at bottom, rgba(79, 70, 229, 0.4) 0%, rgba(124, 58, 237, 0.2) 30%, transparent 70%)'
-          }}
-        ></div>
-        
-        {/* Dark Mode Specific Intense Glow (to match reference "spotlight") */}
-        <div 
-          className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[100%] h-[60%] opacity-0 dark:opacity-100 blur-[80px] transition-opacity duration-500 mix-blend-screen"
-          style={{
-            background: 'radial-gradient(ellipse at bottom, rgba(99, 102, 241, 0.6) 0%, rgba(139, 92, 246, 0.3) 40%, transparent 80%)'
-          }}
-        ></div>
-
-        {/* Top subtle glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-500/5 blur-3xl"></div>
+const ResumeArtifact = () => (
+  <div className="relative mx-auto w-full max-w-[34rem]">
+    <div className="paper-grid absolute -inset-8 rounded-[2.5rem] opacity-60" />
+    <div className="relative rounded-[2rem] border border-white/80 bg-white/70 p-3 shadow-[0_35px_90px_rgba(20,83,45,0.18)] backdrop-blur-sm sm:p-4">
+      <div className="flex items-center justify-between rounded-2xl border border-slate-200/80 bg-[#f8faf7] px-4 py-3">
+        <div className="flex items-center gap-2">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-green-700 text-white"><FileText className="size-4" /></span>
+          <div><p className="text-[11px] font-semibold text-slate-900">Product designer.pdf</p><p className="text-[10px] text-slate-500">Live workspace</p></div>
+        </div>
+        <span className="flex items-center gap-1.5 rounded-full bg-green-100 px-2.5 py-1 text-[10px] font-semibold text-green-800"><span className="size-1.5 rounded-full bg-green-600" /> Saved</span>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="size-9 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300">
-            R
+      <div className="mt-3 grid gap-3 sm:grid-cols-[1.15fr_0.85fr]">
+        <div className="resume-paper rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-3 border-b border-slate-200 pb-4">
+            <div><div className="h-3 w-28 rounded-full bg-slate-900" /><div className="mt-2 h-2 w-20 rounded-full bg-green-600" /><div className="mt-3 h-1.5 w-32 rounded-full bg-slate-200" /></div>
+            <div className="size-10 rounded-full bg-gradient-to-br from-green-200 to-emerald-500" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-            Resu AI
-          </span>
-        </Link>
-        <div className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.4em] text-zinc-500 dark:text-zinc-400 font-medium">
-          <a href="#features" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition hover:-translate-y-px">Features</a>
-          <a href="#testimonials" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition hover:-translate-y-px">Testimonials</a>
-          <a href="#cta" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition hover:-translate-y-px">Contact</a>
-        </div>
-        <div className="hidden md:flex gap-3 items-center">
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
-          </button>
-          {!user && (
-            <>
-              <Link
-                to="/app?state=register"
-                className="px-5 py-2 rounded-md bg-indigo-600 dark:bg-indigo-500 text-white shadow-sm transition hover:bg-indigo-700 dark:hover:bg-indigo-600 hover:-translate-y-0.5 text-sm font-medium"
-              >
-                Get started
-              </Link>
-              <Link to="/app?state=login" className="px-5 py-2 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition text-sm font-medium">
-                Login
-              </Link>
-            </>
-          )}
-          {user && (
-            <Link to="/app" className="px-5 py-2 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition text-sm font-medium">
-              Dashboard
-            </Link>
-          )}
-        </div>
-        <button onClick={() => setMenuOpen(true)} className="md:hidden border border-zinc-200 dark:border-zinc-800 rounded-md p-2 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-
-      <div className="relative px-4 md:px-10 lg:px-20 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <p className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold uppercase tracking-wider border border-indigo-100">
-            AI Resume Studio
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight text-zinc-900 dark:text-white tracking-tight">
-            Land your dream job with <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-800 animate-[pulseGlow_5s_ease-in-out_infinite]">AI-powered</span> resumes.
-          </h1>
-          <p className="text-lg md:text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Build, customize, and download modern resumes with smart prompts, polished templates, and Instant ImageKit uploads.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 pt-4">
-            <Link
-              to="/app"
-              className="flex items-center gap-2 px-8 py-3 rounded-md bg-indigo-600 text-white shadow-md transition hover:bg-indigo-700 hover:-translate-y-0.5 font-medium"
-            >
-              Get started
-              <span className="text-sm">→</span>
-            </Link>
-            <button className="flex items-center gap-2 px-6 py-3 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition hover:-translate-y-0.5 font-medium bg-white/50 dark:bg-zinc-900/50">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path>
-                <rect x="2" y="6" width="14" height="12" rx="2"></rect>
-              </svg>
-              Try demo
-            </button>
-          </div>
-          <div className="flex flex-wrap justify-center gap-3 text-zinc-500 text-xs font-medium pt-4">
-            <span>Trusted by 10,000+ creators</span>
-            <span className="text-zinc-300">·</span>
-            <span>Powered by ImageKit, MongoDB, OpenAI</span>
+          <div className="mt-5 space-y-4">
+            <div><div className="mb-2 h-1.5 w-16 rounded-full bg-green-600" /><div className="space-y-1.5"><div className="h-1.5 w-full rounded-full bg-slate-200" /><div className="h-1.5 w-11/12 rounded-full bg-slate-200" /><div className="h-1.5 w-4/5 rounded-full bg-slate-200" /></div></div>
+            <div><div className="mb-2 h-1.5 w-20 rounded-full bg-slate-900" /><div className="space-y-1.5"><div className="h-1.5 w-full rounded-full bg-slate-200" /><div className="h-1.5 w-10/12 rounded-full bg-slate-200" /><div className="h-1.5 w-9/12 rounded-full bg-slate-200" /></div></div>
+            <div className="flex flex-wrap gap-1.5"><span className="rounded-full bg-green-100 px-2 py-1 text-[8px] font-semibold text-green-800">Figma</span><span className="rounded-full bg-green-100 px-2 py-1 text-[8px] font-semibold text-green-800">Research</span><span className="rounded-full bg-slate-100 px-2 py-1 text-[8px] font-semibold text-slate-500">Strategy</span></div>
           </div>
         </div>
 
-
-      </div>
-
-      <div
-        className={`fixed inset-0 z-50 bg-zinc-900/95 dark:bg-zinc-950/95 backdrop-blur-md text-white flex flex-col items-center justify-center gap-6 transition-transform duration-300 md:hidden ${
-          menuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <a href="#features" className="uppercase tracking-[0.4em] text-sm font-medium hover:text-indigo-400 dark:hover:text-indigo-300 transition">Features</a>
-        <a href="#testimonials" className="uppercase tracking-[0.4em] text-sm font-medium hover:text-indigo-400 dark:hover:text-indigo-300 transition">Testimonials</a>
-        <a href="#cta" className="uppercase tracking-[0.4em] text-sm font-medium hover:text-indigo-400 dark:hover:text-indigo-300 transition">Contact</a>
-        <button onClick={() => setMenuOpen(false)} className="px-8 py-2 rounded-md border border-white/20 dark:border-white/10 hover:bg-white/10 dark:hover:bg-white/5 transition mt-4">
-          Close
-        </button>
+        <div className="flex flex-col gap-3">
+          <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+            <div className="flex items-center justify-between"><span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-green-800">ATS readiness</span><Gauge className="size-4 text-green-700" /></div>
+            <div className="mt-3 flex items-end gap-2"><span className="text-3xl font-semibold tracking-tight text-green-950">86</span><span className="pb-1 text-[10px] font-medium text-green-700">/ 100</span></div>
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-green-200"><div className="h-full w-[86%] rounded-full bg-green-700" /></div>
+            <p className="mt-2 text-[10px] text-green-800">Strong match for your target role</p>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-[#fbfaf6] p-4 shadow-sm">
+            <div className="flex items-center gap-2"><span className="flex size-7 items-center justify-center rounded-lg bg-amber-100 text-amber-700"><WandSparkles className="size-3.5" /></span><span className="text-[10px] font-semibold text-slate-800">AI suggestion</span></div>
+            <p className="mt-3 text-[11px] leading-5 text-slate-600">Make your impact clearer by adding the outcome of this project.</p>
+            <span className="mt-3 inline-flex items-center gap-1 text-[10px] font-semibold text-green-700">Review suggestion <ArrowUpRight className="size-3" /></span>
+          </div>
+        </div>
       </div>
     </div>
+    <div className="animate-float absolute -right-2 -top-5 hidden rounded-2xl border border-white bg-white px-3 py-2 shadow-xl sm:flex sm:items-center sm:gap-2"><span className="flex size-7 items-center justify-center rounded-lg bg-green-100 text-green-700"><Sparkles className="size-3.5" /></span><span className="text-[10px] font-semibold text-slate-700">Tailored in real time</span></div>
+  </div>
+);
+
+const Hero = () => {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const navItems = [['Workflow', '#features'], ['Why ResuAI', '#testimonials'], ['Get started', '#cta']];
+
+  return (
+    <section className="landing-surface relative isolate overflow-hidden">
+      <div className="pointer-events-none absolute left-1/2 top-24 -z-10 size-[32rem] -translate-x-1/2 rounded-full bg-green-200/45 blur-[110px]" />
+      <nav className="animate-fade-in relative z-50 mx-auto flex max-w-7xl items-center justify-between border-b border-slate-200/70 px-5 py-5 sm:px-8 lg:px-10">
+        <Link to="/" className="transition hover:-translate-y-0.5"><img src="/logo.svg" alt="ResuAI home" className="h-10 w-auto" /></Link>
+        <div className="hidden items-center gap-8 text-sm text-slate-600 md:flex">
+          {navItems.map(([label, href]) => <a key={label} href={href} className="transition hover:text-green-800">{label}</a>)}
+        </div>
+        <div className="hidden items-center gap-3 md:flex"><Link to="/app?state=login" className="rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-white hover:text-slate-900">Log in</Link><Link to="/app?state=register" className="glow-button rounded-full bg-green-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-800">Open studio <ArrowUpRight className="ml-1 inline size-3.5" /></Link></div>
+        <button type="button" onClick={() => setMenuOpen((open) => !open)} className="rounded-xl p-2 text-slate-700 hover:bg-white md:hidden" aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-expanded={menuOpen}>{menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}</button>
+        {menuOpen && <div className="animate-popover absolute left-4 right-4 top-[calc(100%-0.25rem)] rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl md:hidden">{navItems.map(([label, href]) => <a key={label} href={href} onClick={() => setMenuOpen(false)} className="block rounded-xl px-3 py-3 text-sm font-medium text-slate-700 hover:bg-green-50">{label}</a>)}<Link to="/app?state=login" onClick={() => setMenuOpen(false)} className="mt-2 block rounded-xl bg-green-700 px-3 py-3 text-center text-sm font-semibold text-white">Open studio</Link></div>}
+      </nav>
+
+      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pb-24 pt-16 sm:px-8 sm:pt-20 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10 lg:px-10 lg:pb-32 lg:pt-24">
+        <div className="relative z-10">
+          <div className="animate-rise-in inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-green-800"><span className="size-1.5 rounded-full bg-green-600" /> The resume studio</div>
+          <h1 className="animate-rise-in mt-7 max-w-2xl text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-slate-950 sm:text-6xl lg:text-7xl" style={{animationDelay: '90ms'}}>A sharper resume for your <span className="text-green-700">next move.</span></h1>
+          <p className="animate-rise-in mt-7 max-w-lg text-base leading-7 text-slate-600 sm:text-lg" style={{animationDelay: '170ms'}}>Write with clarity, tailor with confidence, and leave with a resume that feels unmistakably yours.</p>
+          <div className="animate-rise-in mt-9 flex flex-wrap items-center gap-3" style={{animationDelay: '250ms'}}><Link to="/app?state=register" className="glow-button inline-flex items-center gap-2 rounded-full bg-green-700 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-green-800">Build your resume <ArrowRight className="size-4" /></Link><a href="#features" className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white/70 px-6 py-3.5 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-green-300 hover:bg-white">See how it works</a></div>
+          <div className="animate-fade-in mt-10 flex flex-wrap gap-x-6 gap-y-3 text-xs font-medium text-slate-500" style={{animationDelay: '350ms'}}><span className="flex items-center gap-2"><Check className="size-3.5 text-green-700" /> Guided writing</span><span className="flex items-center gap-2"><Check className="size-3.5 text-green-700" /> Role-ready layouts</span><span className="flex items-center gap-2"><Check className="size-3.5 text-green-700" /> Clean PDF export</span></div>
+        </div>
+        <div className="animate-slide-right lg:pl-4"><ResumeArtifact /></div>
+      </div>
+      <div className="mx-auto flex max-w-7xl items-center gap-4 px-5 pb-8 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 sm:px-8 lg:px-10"><span className="h-px w-10 bg-slate-300" /> One focused workspace for the whole application process</div>
+    </section>
   );
 };
 

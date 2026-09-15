@@ -1,135 +1,30 @@
-import { Zap } from "lucide-react";
-import React from "react";
-import Title from "./Title";
+import { ArrowRight, Download, LayoutTemplate, ScanSearch, Sparkles, WandSparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+const steps = [
+  {number: '01', icon: WandSparkles, title: 'Write clearly', description: 'Turn rough notes into confident, achievement-led language.'},
+  {number: '02', icon: ScanSearch, title: 'Tailor quickly', description: 'Use the role context to focus your strongest experience.'},
+  {number: '03', icon: Download, title: 'Send proudly', description: 'Export a clean, readable resume when it is ready.'},
+];
+
+const showcases = [
+  {id: 'writing', eyebrow: 'AI-assisted writing', title: 'Your best work, in your own voice.', body: 'Start with the details you already know. ResuAI helps shape them into concise, outcome-focused bullets without taking over the story.', tone: 'mint'},
+  {id: 'matching', eyebrow: 'Role matching', title: 'A resume that knows where it is going.', body: 'Compare your content with a job description and get a clearer view of the language and strengths to bring forward.', tone: 'amber'},
+  {id: 'design', eyebrow: 'Design system', title: 'Make the layout feel like you.', body: 'Choose a focused starting point, change the density, order your sections, and pick a color theme that fits your direction.', tone: 'violet'},
+];
+
+const ShowcaseVisual = ({id, tone}) => {
+  if (id === 'matching') return <div className={`showcase-visual showcase-${tone} rounded-3xl border p-5`}><div className="flex items-center justify-between"><span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Role match</span><span className="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-semibold text-amber-800">Good alignment</span></div><div className="mt-7 flex items-center gap-6"><div className="relative flex size-32 items-center justify-center rounded-full border-[10px] border-amber-100"><div className="absolute inset-[-10px] rounded-full border-[10px] border-amber-500 border-b-transparent border-l-transparent rotate-[-38deg]" /><span className="text-3xl font-semibold text-slate-900">78%</span></div><div className="space-y-3 text-xs text-slate-600"><p className="flex items-center gap-2"><span className="size-2 rounded-full bg-green-500" /> 8 strengths found</p><p className="flex items-center gap-2"><span className="size-2 rounded-full bg-amber-500" /> 3 keywords to review</p><p className="flex items-center gap-2"><span className="size-2 rounded-full bg-slate-300" /> 1 section to refine</p></div></div></div>;
+  if (id === 'design') return <div className={`showcase-visual showcase-${tone} rounded-3xl border p-5`}><div className="flex items-center justify-between"><span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Theme studio</span><span className="text-xs font-medium text-slate-500">Evergreen</span></div><div className="mt-6 grid grid-cols-[0.65fr_1fr] gap-4"><div className="space-y-2"><div className="rounded-xl border border-green-300 bg-green-50 p-3"><div className="h-2 w-14 rounded-full bg-green-700" /><div className="mt-2 h-1.5 w-20 rounded-full bg-green-200" /></div><div className="rounded-xl border border-slate-200 bg-white p-3"><div className="h-2 w-16 rounded-full bg-slate-800" /><div className="mt-2 h-1.5 w-20 rounded-full bg-slate-200" /></div><div className="rounded-xl border border-slate-200 bg-white p-3"><div className="h-2 w-12 rounded-full bg-slate-800" /><div className="mt-2 h-1.5 w-16 rounded-full bg-slate-200" /></div></div><div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div className="h-2 w-24 rounded-full bg-slate-900" /><div className="mt-4 h-1.5 w-full rounded-full bg-green-500" /><div className="mt-4 space-y-2"><div className="h-1.5 w-full rounded-full bg-slate-200" /><div className="h-1.5 w-10/12 rounded-full bg-slate-200" /><div className="h-1.5 w-8/12 rounded-full bg-slate-200" /></div><div className="mt-6 flex gap-1.5"><span className="size-5 rounded-full bg-green-700" /><span className="size-5 rounded-full bg-amber-500" /><span className="size-5 rounded-full bg-slate-800" /></div></div></div></div>;
+  return <div className={`showcase-visual showcase-${tone} rounded-3xl border p-5`}><div className="flex items-center gap-2"><span className="flex size-9 items-center justify-center rounded-xl bg-violet-100 text-violet-700"><Sparkles className="size-4" /></span><div><p className="text-xs font-semibold text-slate-900">Rewrite suggestion</p><p className="text-[10px] text-slate-500">Experience section</p></div></div><div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4"><p className="text-xs leading-5 text-slate-500">Worked with cross-functional teams to improve a product experience.</p><div className="my-4 h-px bg-slate-100" /><p className="text-xs font-medium leading-5 text-slate-800">Partnered with 4 teams to simplify onboarding and lift activation by 24%.</p><button type="button" className="mt-4 rounded-lg bg-green-700 px-3 py-2 text-[10px] font-semibold text-white">Use suggestion</button></div></div>;
+};
 
 const Features = () => {
-  const [isHover, setIsHover] = React.useState(false);
-  return (
-    <div
-      id="features"
-      className="flex flex-col items-center my-16 scroll-mt-20 text-zinc-900 dark:text-white"
-    >
-      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 rounded-full px-3 py-1 border border-indigo-100 dark:border-indigo-800 mb-2">
-        <Zap width={12} className="size-3 stroke-indigo-700" />
-        <span>Simple Process</span>
-      </div>
-      <Title
-        title="Build your Resume"
-        description="Our streamlined process helps you create a professional resume in minutes with intelligent AI-powered tools and features."
-      />
+  const [active, setActive] = useState('writing');
+  const selected = showcases.find((item) => item.id === active) || showcases[0];
 
-      <div className="flex flex-col md:flex-row items-center justify-center xl:-mt-10 w-full max-w-6xl px-4">
-        <img
-          className="max-w-xl w-full xl:-ml-20 drop-shadow-md rounded-lg"
-          src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/features/group-image-1.png"
-          alt="Features Preview"
-        />
-        <div
-          className="px-4 md:px-0 w-full max-w-md space-y-4"
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-        >
-          <div
-            className={
-              "flex items-center gap-6 group cursor-pointer"
-            }
-          >
-            <div
-              className={`p-5 w-full group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/10 border border-transparent group-hover:border-indigo-200 dark:group-hover:border-indigo-900/50 flex gap-4 rounded-lg transition-all duration-300 ${
-                !isHover ? "border-indigo-100 dark:border-indigo-900/30 bg-indigo-50/50 dark:bg-indigo-900/5" : "bg-white dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800"
-              }`}
-            >
-              <div className="p-2 bg-white dark:bg-zinc-800 rounded-md shadow-sm h-fit border border-zinc-100 dark:border-zinc-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5 stroke-indigo-600"
-                >
-                  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
-                  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
-                </svg>
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-                  Real-Time Analytics
-                </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  Get instant insights into your finances with live dashboards.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-6 group cursor-pointer">
-            <div className="p-5 w-full group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/10 border border-transparent group-hover:border-emerald-200 dark:group-hover:border-emerald-900/50 flex gap-4 rounded-lg transition-all duration-300 bg-white dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800 hover:shadow-sm">
-              <div className="p-2 bg-white dark:bg-zinc-800 rounded-md shadow-sm h-fit border border-zinc-100 dark:border-zinc-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5 stroke-emerald-600"
-                >
-                  <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
-                </svg>
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-                  Bank-Grade Security
-                </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  End-to-end encryption, 2FA, compliance with GDPR standards.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-6 group cursor-pointer">
-            <div className="p-5 w-full group-hover:bg-amber-50 dark:group-hover:bg-amber-900/10 border border-transparent group-hover:border-amber-200 dark:group-hover:border-amber-900/50 flex gap-4 rounded-lg transition-all duration-300 bg-white dark:bg-zinc-900 border-zinc-100 dark:border-zinc-800 hover:shadow-sm">
-              <div className="p-2 bg-white dark:bg-zinc-800 rounded-md shadow-sm h-fit border border-zinc-100 dark:border-zinc-700">
-                <svg
-                  className="size-5 stroke-amber-600"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 15V3" />
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <path d="m7 10 5 5 5-5" />
-                </svg>
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-                  Customizable Reports
-                </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  Export professional, audit-ready financial reports for tax or
-                  internal review.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <section id="features" className="scroll-mt-10 bg-[#f7f7f2] px-5 py-24 sm:px-8 lg:px-10 lg:py-32"><div className="mx-auto max-w-7xl"><div className="animate-rise-in max-w-2xl"><p className="text-xs font-semibold uppercase tracking-[0.22em] text-green-700">The workflow</p><h2 className="mt-5 max-w-xl text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl">Everything you need to move with clarity.</h2><p className="mt-5 max-w-lg text-base leading-7 text-slate-600">A considered workspace for the parts of applying that usually feel scattered.</p></div><div className="mt-14 grid gap-3 border-y border-slate-200 py-5 md:grid-cols-3">{steps.map(({number, icon: Icon, title, description}) => <div key={number} className="interactive-card group flex gap-4 rounded-2xl p-4"><span className="text-xs font-semibold text-green-700">{number}</span><div>{React.createElement(Icon, {className: 'size-5 text-slate-800 transition group-hover:text-green-700'})}<h3 className="mt-3 font-semibold text-slate-900">{title}</h3><p className="mt-1 text-sm leading-6 text-slate-500">{description}</p></div></div>)}</div><div className="mt-24 grid items-start gap-10 lg:grid-cols-[0.8fr_1.2fr]"><div><p className="text-xs font-semibold uppercase tracking-[0.22em] text-green-700">Designed around the work</p><h2 className="mt-4 max-w-lg text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl">Less fiddling. More forward motion.</h2><p className="mt-5 max-w-md text-base leading-7 text-slate-600">The product stays close to the document, so every suggestion, design decision, and improvement has a visible result.</p><div className="mt-8 space-y-2">{showcases.map((item) => <button key={item.id} type="button" onClick={() => setActive(item.id)} className={`interactive-card flex w-full items-center justify-between rounded-2xl border p-4 text-left ${active === item.id ? 'border-green-300 bg-white shadow-sm' : 'border-transparent hover:border-slate-200 hover:bg-white/70'}`} aria-pressed={active === item.id}><span><span className="block text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">{item.eyebrow}</span><span className="mt-1 block font-semibold text-slate-900">{item.title}</span></span><ArrowRight className={`size-4 transition ${active === item.id ? 'text-green-700' : 'text-slate-300 group-hover:text-slate-600'}`} /></button>)}</div></div><div className="animate-slide-right"><ShowcaseVisual id={selected.id} tone={selected.tone} /><div className="mt-4 flex items-center justify-between px-1"><p className="max-w-sm text-sm leading-6 text-slate-500">{selected.body}</p><Link to="/app?state=register" className="hidden items-center gap-2 text-sm font-semibold text-green-700 transition hover:gap-3 sm:flex">Open studio <ArrowRight className="size-4" /></Link></div></div></div></div></section>;
 };
 
 export default Features;
