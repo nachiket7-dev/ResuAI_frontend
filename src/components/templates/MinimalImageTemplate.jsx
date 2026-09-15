@@ -1,6 +1,21 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import CustomSectionsPreview from '../CustomSectionsPreview';
 
-const MinimalImageTemplate = ({ data, accentColor }) => {
+const MinimalImageTemplate = ({ data, accentColor, design }) => {
+    const [fileImageUrl, setFileImageUrl] = useState('');
+
+    useEffect(() => {
+        if (!(data.personal_info?.image instanceof Blob)) {
+            setFileImageUrl('');
+            return undefined;
+        }
+
+        const objectUrl = URL.createObjectURL(data.personal_info.image);
+        setFileImageUrl(objectUrl);
+        return () => URL.revokeObjectURL(objectUrl);
+    }, [data.personal_info?.image]);
+
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
         const [year, month] = dateStr.split("-");
@@ -16,17 +31,11 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
 
                 <div className="col-span-1  py-10">
                     {/* Image */}
-                    {data.personal_info?.image && typeof data.personal_info.image === 'string' ? (
+                    {design?.showPhoto && (typeof data.personal_info?.image === 'string' ? data.personal_info.image : fileImageUrl) ? (
                         <div className="mb-6">
-                            <img src={data.personal_info.image} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" style={{ background: accentColor+'70' }} />
+                            <img src={typeof data.personal_info.image === 'string' ? data.personal_info.image : fileImageUrl} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" style={{ background: accentColor+'70' }} />
                         </div>
-                    ) : (
-                        data.personal_info?.image && typeof data.personal_info.image === 'object' ? (
-                            <div className="mb-6">
-                                <img src={URL.createObjectURL(data.personal_info.image)} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" />
-                            </div>
-                        ) : null
-                    )}
+                    ) : null}
                 </div>
 
                 {/* Name + Title */}
@@ -41,6 +50,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
 
                 {/* Left Sidebar */}
                 <aside className="col-span-1 border-r border-zinc-400 p-6 pt-0">
+
 
                     {/* Contact */}
                     <section className="mb-8">
@@ -95,9 +105,9 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                             <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
                                 SKILLS
                             </h2>
-                            <ul className="space-y-1 text-sm">
+                            <ul className={design?.skillsStyle === 'columns' ? 'grid grid-cols-2 gap-1 text-sm' : 'space-y-1 text-sm'}>
                                 {data.skills.map((skill, index) => (
-                                    <li key={index}>{skill}</li>
+                                    <li key={index} className={design?.skillsStyle === 'pills' ? 'rounded-full bg-zinc-100 px-2 py-1' : ''}>{skill}</li>
                                 ))}
                             </ul>
                         </section>
@@ -178,10 +188,13 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                             </div>
                         </section>
                     )}
+
+                    <CustomSectionsPreview sections={data.custom_sections} accentColor={accentColor} compact />
                 </main>
             </div>
         </div>
     );
-};
+}
+
 
 export default MinimalImageTemplate;

@@ -1,5 +1,6 @@
+import CustomSectionsPreview from '../CustomSectionsPreview';
 
-const MinimalTemplate = ({ data, accentColor }) => {
+const MinimalTemplate = ({ data, accentColor, design }) => {
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
         const [year, month] = dateStr.split("-");
@@ -118,11 +119,15 @@ const MinimalTemplate = ({ data, accentColor }) => {
                         Skills
                     </h2>
 
-                    <div className="text-gray-700">
-                        {data.skills.join(" • ")}
+                    <div className={design?.skillsStyle === 'columns' ? 'grid grid-cols-2 gap-x-4 gap-y-1 text-gray-700' : 'flex flex-wrap gap-x-4 gap-y-1 text-gray-700'}>
+                        {data.skills.map((skill, index) => (
+                            <span key={index} className={design?.skillsStyle === 'pills' ? 'rounded-full bg-gray-100 px-3 py-1' : ''}>{skill}</span>
+                        ))}
                     </div>
                 </section>
             )}
+
+            <CustomSectionsPreview sections={data.custom_sections} accentColor={accentColor} compact />
         </div>
     );
 }

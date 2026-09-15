@@ -3,23 +3,40 @@ import ClassicTemplate from './templates/ClassicTemplate'
 import MinimalImageTemplate from './templates/MinimalImageTemplate'
 import MinimalTemplate from './templates/MinimalTemplate'
 import ModernTemplate from './templates/ModernTemplate'
+import {DEFAULT_DESIGN} from '../configs/designPresets'
 
-const ResumePreview = ({data,template,accentColor,classes = ""}) => {
+const ResumePreview = ({data,template,accentColor,design,classes = ""}) => {
+    const activeDesign = {
+        ...DEFAULT_DESIGN,
+        layout: template || DEFAULT_DESIGN.layout,
+        showPhoto: template === 'minimal-image',
+        ...(design || {}),
+    };
+    const fontFamilies = {
+        outfit: '"Avenir Next", "Inter", system-ui, sans-serif',
+        inter: 'Inter, Arial, sans-serif',
+        serif: 'Georgia, serif',
+    };
+
     const renderTemplate = () => {
         switch (template) {
             case "modern":
-                return <ModernTemplate data={data} accentColor={accentColor} />;
+                return <ModernTemplate data={data} accentColor={accentColor} design={activeDesign} />;
             case "minimal":
-                return <MinimalTemplate data={data} accentColor={accentColor} />;
+                return <MinimalTemplate data={data} accentColor={accentColor} design={activeDesign} />;
             case "minimal-image":
-                return <MinimalImageTemplate data={data} accentColor={accentColor} />;
+                return <MinimalImageTemplate data={data} accentColor={accentColor} design={activeDesign} />;
             default:
-                return <ClassicTemplate data={data} accentColor={accentColor} />;
+                return <ClassicTemplate data={data} accentColor={accentColor} design={activeDesign} />;
         }
     }
   return (
-    <div className='w-full bg-zinc-100 dark:bg-zinc-900/50'>
-        <div id='resume-preview' className={"border border-zinc-200 dark:border-zinc-700 print:shadow-none print:border-none" + classes}>
+    <div className='resume-preview-shell w-full'>
+        <div
+            id='resume-preview'
+            className={`animate-fade-in resume-preview-page resume-design resume-density-${activeDesign.density} border border-gray-200 print:shadow-none print:border-none ${classes}`}
+            style={{'--resume-font-family': fontFamilies[activeDesign.font] || fontFamilies.outfit, '--resume-accent-color': accentColor || '#166534'}}
+        >
             {renderTemplate()}
         </div>
         <style>
@@ -30,14 +47,14 @@ const ResumePreview = ({data,template,accentColor,classes = ""}) => {
                 }
                 @media print{
                     html, body {
-                        width : 8.5in;
-                        height : 11in;
-                        overflow : hidden;
+                        width : auto;
+                        min-height : auto;
+                        overflow : visible;
                     }
                     body *{
                         visibility : hidden;
                     }
-                    #resume-preview #resume-preview *{
+                    #resume-preview, #resume-preview *{
                         visibility : visible;
                     }
                     #resume-preview{
@@ -45,7 +62,7 @@ const ResumePreview = ({data,template,accentColor,classes = ""}) => {
                         left : 0;
                         top : 0;
                         width : 100%;
-                        height : auto;
+                        min-height : 0;
                         margin : 0;
                         padding : 0;
                         box-shadow : none !important;

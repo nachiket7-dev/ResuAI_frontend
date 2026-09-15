@@ -1,6 +1,7 @@
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import CustomSectionsPreview from '../CustomSectionsPreview';
 
-const ModernTemplate = ({ data, accentColor }) => {
+const ModernTemplate = ({ data, accentColor, design }) => {
 	const formatDate = (dateStr) => {
 		if (!dateStr) return "";
 		const [year, month] = dateStr.split("-");
@@ -38,13 +39,13 @@ const ModernTemplate = ({ data, accentColor }) => {
 						</div>
 					)}
 					{data.personal_info?.linkedin && (
-						<a target="_blank" href={data.personal_info?.linkedin} className="flex items-center gap-2">
+							<a target="_blank" rel="noreferrer" href={data.personal_info?.linkedin} className="flex items-center gap-2">
 							<Linkedin className="size-4" />
 							<span className="break-all text-xs">{data.personal_info.linkedin.split("https://www.")[1] ? data.personal_info.linkedin.split("https://www.")[1] : data.personal_info.linkedin}</span>
 						</a>
 					)}
 					{data.personal_info?.website && (
-						<a target="_blank" href={data.personal_info?.website} className="flex items-center gap-2">
+							<a target="_blank" rel="noreferrer" href={data.personal_info?.website} className="flex items-center gap-2">
 							<Globe className="size-4" />
 							<span className="break-all text-xs">{data.personal_info.website.split("https://")[1] ? data.personal_info.website.split("https://")[1] : data.personal_info.website}</span>
 						</a>
@@ -105,6 +106,7 @@ const ModernTemplate = ({ data, accentColor }) => {
 							{data.project.map((p, index) => (
 								<div key={index} className="relative pl-6 border-l border-gray-200" style={{borderLeftColor: accentColor}}>
 
+
 									<div className="flex justify-between items-start">
 										<div>
 											<h3 className="text-lg font-medium text-gray-900">{p.name}</h3>
@@ -121,55 +123,57 @@ const ModernTemplate = ({ data, accentColor }) => {
 					</section>
 				)}
 
-				<div className="grid sm:grid-cols-2 gap-8">
-					{/* Education */}
-					{data.education && data.education.length > 0 && (
-						<section>
-							<h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
-								Education
-							</h2>
+					<div className="grid sm:grid-cols-2 gap-8">
+						{/* Education */}
+						{data.education && data.education.length > 0 && (
+							<section>
+								<h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
+									Education
+								</h2>
 
-							<div className="space-y-4">
-								{data.education.map((edu, index) => (
-									<div key={index}>
-										<h3 className="font-semibold text-gray-900">
-											{edu.degree} {edu.field && `in ${edu.field}`}
-										</h3>
-										<p style={{ color: accentColor }}>{edu.institution}</p>
-										<div className="flex justify-between items-center text-sm text-gray-600">
-											<span>{formatDate(edu.graduation_date)}</span>
-											{edu.gpa && <span>GPA: {edu.gpa}</span>}
+								<div className="space-y-4">
+									{data.education.map((edu, index) => (
+										<div key={index}>
+											<h3 className="font-semibold text-gray-900">
+												{edu.degree} {edu.field && `in ${edu.field}`}
+											</h3>
+											<p style={{ color: accentColor }}>{edu.institution}</p>
+											<div className="flex justify-between items-center text-sm text-gray-600">
+												<span>{formatDate(edu.graduation_date)}</span>
+												{edu.gpa && <span>GPA: {edu.gpa}</span>}
+											</div>
 										</div>
-									</div>
-								))}
-							</div>
-						</section>
-					)}
+									))}
+								</div>
+							</section>
+						)}
 
-					{/* Skills */}
-					{data.skills && data.skills.length > 0 && (
-						<section>
-							<h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
-								Skills
-							</h2>
+						{/* Skills */}
+						{data.skills && data.skills.length > 0 && (
+							<section>
+								<h2 className="text-2xl font-light mb-4 pb-2 border-b border-gray-200">
+									Skills
+								</h2>
 
-							<div className="flex flex-wrap gap-2">
-								{data.skills.map((skill, index) => (
-									<span
-										key={index}
-										className="px-3 py-1 text-sm text-white rounded-full"
-										style={{ backgroundColor: accentColor }}
-									>
-										{skill}
-									</span>
-								))}
-							</div>
-						</section>
-					)}
+								<div className={design?.skillsStyle === 'columns' ? 'grid grid-cols-2 gap-2' : design?.skillsStyle === 'list' ? 'space-y-1' : 'flex flex-wrap gap-2'}>
+									{data.skills.map((skill, index) => (
+										<span
+											key={index}
+											className={design?.skillsStyle === 'pills' ? 'px-3 py-1 text-sm text-white rounded-full' : 'text-sm text-gray-700'}
+											style={design?.skillsStyle === 'pills' ? { backgroundColor: accentColor } : undefined}
+										>
+											{design?.skillsStyle === 'pills' ? skill : `• ${skill}`}
+										</span>
+									))}
+								</div>
+							</section>
+						)}
+					</div>
+
+					<CustomSectionsPreview sections={data.custom_sections} accentColor={accentColor} compact />
 				</div>
 			</div>
-		</div>
-	);
+		);
 }
 
 export default ModernTemplate;

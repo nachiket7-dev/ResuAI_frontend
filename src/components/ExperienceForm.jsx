@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import api from '../configs/api';
 import toast from 'react-hot-toast';
+import {notifyAIComplete} from '../utils/aiEvents';
 
-const ExperienceForm = ({data, onChange}) => {
+const ExperienceForm = ({data, onChange, resumeId}) => {
     const {token} = useSelector((state) => state.auth);
     const [generatingIndex, setGeneratingIndex] = useState(-1);
+    const [rewriteOptions, setRewriteOptions] = useState(null);
     const addExperience = () => {
         const newExperience = {
             company : "",
@@ -34,64 +36,101 @@ const ExperienceForm = ({data, onChange}) => {
         try {
             const {data: responseData} = await api.post('/api/ai/enhance-job-desc', {userContent: prompt}, {headers: {Authorization: token}});
             updateExperience(index, "description", responseData.enhancedContent);
+            notifyAIComplete();
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
         } finally {
             setGeneratingIndex(-1);
         }
     }
-    return (
-        <div className='space-y-6'>
+    const rewriteBullet = async (index) => {
+        setGeneratingIndex(index);
+        setRewriteOptions(null);
+        const experience = data[index];
+        try {
+            const {data: responseData} = await api.post('/api/ai/rewrite-bullet', {
+                resumeId,
+                bullet: experience.description,
+                position: experience.position,
+                company: experience.company,
+            }, {headers: {Authorization: token}});
+            setRewriteOptions({index, rewrites: responseData.result?.rewrites || []});
+            notifyAIComplete();
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message);
+        } finally {
+            setGeneratingIndex(-1);
+        }
+    }
+  return (
+    <div className='space-y-6'>
+        <div className='flex items-center justify-between'>
             <div>
-                <h3 className='text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-1'>Professional Experience</h3>
-                <p className='text-sm text-zinc-500 dark:text-zinc-400'>Add your job experience</p>
-                <button onClick={addExperience} className='flex items-center gap-2 px-4 py-2 mt-4 text-sm font-medium bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]'>
-                    <Plus className='size-4' />
-                    Add Experience
-                </button>
+                <h3 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>Professional Experience</h3>
+                <p className='text-sm text-gray-500'>Add your job experience</p>
             </div>
-            {data.length === 0 ? (
-                <div className='text-center py-12 text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800 rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-700'>
-                    <Briefcase className='w-14 h-14 mx-auto mb-4 text-zinc-300 dark:text-zinc-600' />
-                    <p className='font-medium'>No experience added yet</p>
-                    <p className='text-sm mt-1'>Click "Add Experience" to get started.</p>
-                </div>
-            ) : (
-                <div className='space-y-4'>
-                    {data.map((experience, index) => (
-                        <div key={index} className='p-5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl space-y-4 shadow-sm hover:shadow-md transition-all duration-200'>
-                            <div className='flex justify-between items-start'>
-                                <h4 className='font-semibold text-zinc-900 dark:text-zinc-100'>Experience #{index + 1}</h4>
-                                <button onClick={() => removeExperience(index)} className='text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition-all duration-200'>
-                                    <Trash2 className='size-4' />
-                                </button>
-                            </div>
-                            <div className='grid md:grid-cols-2 gap-3'>
-                                <input value={experience.company || ""} onChange={(e) => updateExperience(index, "company", e.target.value)} type="text" placeholder='Company Name' className='px-3 py-2.5 text-sm w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all' />
-                                <input value={experience.position || ""} onChange={(e) => updateExperience(index, "position", e.target.value)} type="text" placeholder='Job Title' className='px-3 py-2.5 text-sm w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all' />
-                                <input value={experience.start_date || ""} onChange={(e) => updateExperience(index, "start_date", e.target.value)} type="month" className='px-3 py-2.5 text-sm w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all' />
-                                <input value={experience.end_date || ""} onChange={(e) => updateExperience(index, "end_date", e.target.value)} type="month" disabled={experience.is_current} className='px-3 py-2.5 text-sm w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all disabled:bg-zinc-100 dark:disabled:bg-zinc-800 disabled:cursor-not-allowed' />
-                            </div>
-                            <label className='flex items-center gap-2 cursor-pointer'>
-                                {/* Checkbox intentionally omitted for clarity, restore as needed */}
-                                <span className='text-sm text-zinc-700 dark:text-zinc-300 font-medium'>Currently working here</span>
-                            </label>
-                            <div className='space-y-2'>
-                                <div className='flex items-center justify-between'>
-                                    <label className='text-sm font-semibold text-zinc-700 dark:text-zinc-300'>Job description</label>
-                                    <button disabled={generatingIndex === index || !experience.position || !experience.company} onClick={() => generateDescription(index)} className='flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm'>
-                                        {generatingIndex === index ? (<Loader2 className='w-3 h-3 animate-spin' />) : (<Sparkles className='w-3 h-3' />)}
-                                        Enhance with AI
-                                    </button>
-                                </div>
-                                <textarea rows={4} value={experience.description || ""} onChange={(e) => updateExperience(index, "description", e.target.value)} className='w-full text-sm px-3 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all' placeholder='Describe your key responsibilities and achievements...' />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+            <button type='button' onClick={addExperience} className='flex items-center gap-2 px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors'>
+                <Plus className='size-4' />
+                Add Experience
+            </button>
         </div>
-    )
+        {data.length === 0 ? (
+            <div className='text-center py-8 text-gray-500'>
+                <Briefcase className='w-12 h-12 mx-auto mb-3 text-gray-300' />
+                <p>No experience added yet</p>
+                <p className='text-sm'>Click "Add Experience" to get started.</p>
+            </div>
+        ): (
+            <div className='space-y-4'>
+                {data.map((experience, index) => {
+                    return (<div key={index} className='interactive-card space-y-3 rounded-2xl border border-gray-200 p-4'>
+                        <div className='flex justify-between items-start'>
+                            <h4>Experience #{index + 1}</h4>
+                            <button type='button' onClick={() => removeExperience(index)} className='text-red-500 hover:text-red-700 transition-colors'>
+                                <Trash2 className='size-4' />
+                            </button>
+                        </div>
+
+                        <div className='grid md:grid-cols-2 gap-3'>
+
+                           <input value={experience.company || ""} onChange={(e) => updateExperience(index, "company", e.target.value)} type="text" placeholder='Company Name' className='px-3 py-2 text-sm rounded-lg' /> 
+
+                           <input value={experience.position || ""} onChange={(e) => updateExperience(index, "position", e.target.value)} type="text" placeholder='Job Title' className='px-3 py-2 text-sm rounded-lg' /> 
+
+                           <input value={experience.start_date || ""} onChange={(e) => updateExperience(index, "start_date", e.target.value)} type="month" className='px-3 py-2 text-sm rounded-lg' />
+
+                           <input value={experience.end_date || ""} onChange={(e) => updateExperience(index, "end_date", e.target.value)} type="month" disabled={experience.is_current} className='px-3 py-2 text-sm rounded-lg disabled:bg-gray-100' />
+                        </div>
+                        <label className='flex items-center gap-2'>
+                            <input type="checkbox" checked={experience.is_current || false} onChange={(e) => {updateExperience(index, "is_current", e.target.checked ? true : false);}} className='rounded border-gray-300 text-green-600 focus:ring-green-500' />
+                            <span className='text-sm text-gray-700'>Currently working here</span>
+                        </label>
+
+                        <div className='space-y-2'>
+                            <div className='flex items-center justify-between'>
+                                <label className='text-sm font-medium text-gray-700'>Job description</label>
+                                <div className='flex items-center gap-2'>
+                                <button type='button' disabled={generatingIndex === index || !experience.position || !experience.company} onClick={() => generateDescription(index)} className='flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50'>
+                                    {generatingIndex === index ? (<Loader2 className='w-3 h-3 animate-spin' />) : (<Sparkles className='w-3 h-3' />)}
+                                    Enhance with AI
+                                </button>
+                                <button type='button' disabled={generatingIndex === index || !resumeId || !experience.description?.trim()} onClick={() => rewriteBullet(index)} className='flex items-center gap-1 px-2 py-1 text-xs bg-emerald-100 text-emerald-700 rounded hover:bg-emerald-200 transition-colors disabled:opacity-50'>
+                                    <Sparkles className='w-3 h-3' /> Rewrite options
+                                </button>
+                                </div>
+                            </div>
+                            <textarea rows={4} value={experience.description || ""} onChange={(e) => updateExperience(index, "description", e.target.value)} className='w-full text-sm px-3 py-2 rounded-lg resize-none' placeholder='Describe your key responsibilities and achievements...' />
+                            {rewriteOptions?.index === index && <div className='space-y-2 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3'>
+                                <p className='text-xs font-semibold text-emerald-900'>Choose a grounded rewrite</p>
+                                {rewriteOptions.rewrites.length > 0 ? rewriteOptions.rewrites.map((rewrite) => <button type='button' key={`${rewrite.focus}-${rewrite.text}`} onClick={() => {updateExperience(index, 'description', rewrite.text); setRewriteOptions(null)}} className='block w-full rounded-lg bg-white p-3 text-left text-xs leading-5 text-slate-700 ring-1 ring-emerald-100 transition hover:-translate-y-0.5 hover:ring-emerald-300'><span className='mb-1 block text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-700'>{rewrite.focus}</span>{rewrite.text}</button>) : <p className='text-xs text-slate-500'>No rewrite options were returned. Try again with a fuller bullet.</p>}
+                            </div>}
+                        </div>
+                    </div>)
+                })}
+            </div>
+        )}
+    </div>
+  )
 }
 
 export default ExperienceForm

@@ -1,6 +1,7 @@
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import CustomSectionsPreview from '../CustomSectionsPreview';
 
-const ClassicTemplate = ({ data, accentColor }) => {
+const ClassicTemplate = ({ data, accentColor, design }) => {
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
         const [year, month] = dateStr.split("-");
@@ -99,16 +100,16 @@ const ClassicTemplate = ({ data, accentColor }) => {
                         PROJECTS
                     </h2>
 
-                    <ul className="space-y-3 ">
+                    <div className="space-y-3">
                         {data.project.map((proj, index) => (
-                            <div key={index} className="flex justify-between items-start border-l-3 border-gray-300 pl-6">
+                            <div key={index} className="flex justify-between items-start border-l-3 border-gray-300 pl-6" style={{borderLeftColor: accentColor}}>
                                 <div>
-                                    <li className="font-semibold text-gray-800 ">{proj.name}</li>
+                                    <h3 className="font-semibold text-gray-800">{proj.name}</h3>
                                     <p className="text-gray-600">{proj.description}</p>
                                 </div>
                             </div>
                         ))}
-                    </ul>
+                    </div>
                 </section>
             )}
 
@@ -145,15 +146,17 @@ const ClassicTemplate = ({ data, accentColor }) => {
                         CORE SKILLS
                     </h2>
 
-                    <div className="flex gap-4 flex-wrap">
+                    <div className={design?.skillsStyle === 'columns' ? 'grid grid-cols-2 gap-x-4 gap-y-1' : 'flex gap-4 flex-wrap'}>
                         {data.skills.map((skill, index) => (
-                            <div key={index} className="text-gray-700">
+                            <div key={index} className={design?.skillsStyle === 'pills' ? 'text-gray-700 rounded-full bg-gray-100 px-3 py-1' : 'text-gray-700'}>
                                 • {skill}
                             </div>
                         ))}
                     </div>
                 </section>
             )}
+
+            <CustomSectionsPreview sections={data.custom_sections} accentColor={accentColor} />
         </div>
     );
 }
